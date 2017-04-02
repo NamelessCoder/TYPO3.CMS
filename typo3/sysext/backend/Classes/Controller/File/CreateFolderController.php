@@ -110,8 +110,8 @@ class CreateFolderController extends AbstractModule
         }
         // Cleaning and checking target directory
         if (!$this->folderObject) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
+            $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
+            $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1294586845);
         }
         if ($this->folderObject->getStorage()->getUid() === 0) {
@@ -131,12 +131,12 @@ class CreateFolderController extends AbstractModule
             'var path = "' . $this->target . '";
             var confirmTitle = '
             . GeneralUtility::quoteJSvalue(
-                $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:pleaseConfirm')
+                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:pleaseConfirm')
             )
             . ';
             var confirmText = '
             . GeneralUtility::quoteJSvalue(
-                $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.redraw')
+                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.redraw')
             )
             . ';
             function reload(a) {
@@ -229,7 +229,7 @@ class CreateFolderController extends AbstractModule
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
                ->setHref($this->returnUrl)
-               ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+               ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }

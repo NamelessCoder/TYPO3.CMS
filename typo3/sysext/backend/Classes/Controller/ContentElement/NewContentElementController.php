@@ -143,7 +143,7 @@ class NewContentElementController extends AbstractModule
     public function init()
     {
         $lang = $this->getLanguageService();
-        $lang->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+        $lang->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $LOCAL_LANG_orig = $GLOBALS['LOCAL_LANG'];
         $lang->includeLLFile('EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf');
         ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $GLOBALS['LOCAL_LANG']);

@@ -33,11 +33,11 @@ The value **should** be of PHP type float, not only a string.
                  'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.mobile',
                  'allowedAspectRatios' => [
                      '4:3' => [
-                         'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
+                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
                          'value' => 4 / 3
                      ],
                      'NaN' => [
-                         'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
+                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
                          'value' => 0.0
                      ],
                  ],
@@ -46,11 +46,11 @@ The value **should** be of PHP type float, not only a string.
                  'title' => 'LLL:EXT:ext_key/Resources/Private/Language/locallang.xlf:imageManipulation.desktop',
                  'allowedAspectRatios' => [
                      '4:3' => [
-                         'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
+                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
                          'value' => 4 / 3
                      ],
                      'NaN' => [
-                         'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
+                         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
                          'value' => 0.0
                      ],
                  ],
@@ -180,11 +180,11 @@ It is also possible to set the cropping configuration only for a specific tt_con
                ],
                'allowedAspectRatios' => [
                    '4:3' => [
-                       'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
+                       'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.4_3',
                        'value' => 4 / 3
                    ],
                    'NaN' => [
-                       'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
+                       'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.ratio.free',
                        'value' => 0.0
                    ],
                ],

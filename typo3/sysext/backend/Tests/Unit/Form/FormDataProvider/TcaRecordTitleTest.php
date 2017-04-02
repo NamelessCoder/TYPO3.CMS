@@ -365,7 +365,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
-        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
             ->willReturn(' min| hrs| days| yrs| min| hour| day| year');
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
         $GLOBALS['EXEC_TIME'] = 978912061;
@@ -864,7 +864,7 @@ class TcaRecordTitleTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $languageService->sL(Argument::cetera())->willReturnArgument(0)->shouldBeCalled();
 
         $expected = $input;
-        $expected['recordTitle'] = 'LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:yes';
+        $expected['recordTitle'] = 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes';
         $this->assertSame($expected, $this->subject->addData($input));
     }
 

@@ -71,7 +71,7 @@ class FileInfoElement extends AbstractFormElement
             $content = '';
             if ($file->isMissing()) {
                 $content .= '<span class="label label-danger label-space-right">'
-                    . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
+                    . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                     . '</span>';
             }
             if ($previewImage) {
@@ -83,11 +83,11 @@ class FileInfoElement extends AbstractFormElement
             $content .= '<strong>' . htmlspecialchars($file->getName()) . '</strong>';
             $content .= ' (' . htmlspecialchars(GeneralUtility::formatSize($file->getSize())) . 'bytes)<br />';
             $content .= BackendUtility::getProcessedValue('sys_file', 'type', $file->getType()) . ' (' . $file->getMimeType() . ')<br />';
-            $content .= htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:fileMetaDataLocation')) . ': ';
+            $content .= htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:fileMetaDataLocation')) . ': ';
             $content .= htmlspecialchars($file->getStorage()->getName()) . ' - ' . htmlspecialchars($file->getIdentifier()) . '<br />';
             $content .= '<br />';
         } else {
-            $content = '<h2>' . htmlspecialchars($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:fileMetaErrorInvalidRecord')) . '</h2>';
+            $content = '<h2>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:fileMetaErrorInvalidRecord')) . '</h2>';
         }
 
         return $content;

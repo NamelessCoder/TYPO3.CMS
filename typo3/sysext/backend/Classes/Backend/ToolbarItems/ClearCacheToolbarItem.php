@@ -17,8 +17,10 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 use TYPO3\CMS\Backend\Toolbar\ClearCacheActionsHookInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Application\ApplicationDelegateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Page\PageRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -52,8 +54,8 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         if ($backendUser->isAdmin() || $backendUser->getTSConfigVal('options.clearCache.pages')) {
             $this->cacheActions[] = [
                 'id' => 'pages',
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesTitle',
-                'description' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushPageCachesDescription',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushPageCachesTitle',
+                'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushPageCachesDescription',
                 'href' => BackendUtility::getModuleUrl('tce_db', ['cacheCmd' => 'pages']),
                 'iconIdentifier' => 'actions-system-cache-clear-impact-low'
             ];
@@ -66,8 +68,8 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
         if ($backendUser->getTSConfigVal('options.clearCache.all') || ($backendUser->isAdmin() && $backendUser->getTSConfigVal('options.clearCache.all') !== '0')) {
             $this->cacheActions[] = [
                 'id' => 'all',
-                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesTitle2',
-                'description' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:flushAllCachesDescription2',
+                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushAllCachesTitle2',
+                'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:flushAllCachesDescription2',
                 'href' => BackendUtility::getModuleUrl('tce_db', ['cacheCmd' => 'all']),
                 'iconIdentifier' => 'actions-system-cache-clear-impact-high'
             ];
@@ -179,11 +181,11 @@ class ClearCacheToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * @return PageRenderer
+     * @return PageRendererInterface
      */
     protected function getPageRenderer()
     {
-        return GeneralUtility::makeInstance(PageRenderer::class);
+        return ApplicationDelegateFactory::getConfiguredApplicationDelegate()->getPageRenderer();
     }
 
     /**

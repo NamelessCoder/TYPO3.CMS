@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Frontend\Page;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Application\ApplicationDelegateFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Page\PageRendererInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -306,11 +308,6 @@ class PageGenerator
                     break;
                 case 'html5':
                     $docTypeParts[] = '<!DOCTYPE html>';
-                    if ($xmlDocument) {
-                        $pageRenderer->setMetaCharsetTag('<meta charset="|" />');
-                    } else {
-                        $pageRenderer->setMetaCharsetTag('<meta charset="|">');
-                    }
                     break;
                 case 'none':
                     break;
@@ -319,11 +316,6 @@ class PageGenerator
             }
         } else {
             $docTypeParts[] = '<!DOCTYPE html>';
-            if ($xmlDocument) {
-                $pageRenderer->setMetaCharsetTag('<meta charset="|" />');
-            } else {
-                $pageRenderer->setMetaCharsetTag('<meta charset="|">');
-            }
         }
         if ($tsfe->xhtmlVersion) {
             $htmlTagAttributes['xml:lang'] = $htmlLang;
@@ -355,6 +347,7 @@ class PageGenerator
         } else {
             $_attr = '';
         }
+        /*
         $htmlTag = '<html' . ($_attr ? ' ' . $_attr : '') . '>';
         if (isset($tsfe->config['config']['htmlTag_stdWrap.'])) {
             $htmlTag = $tsfe->cObj->stdWrap($htmlTag, $tsfe->config['config']['htmlTag_stdWrap.']);
@@ -366,6 +359,7 @@ class PageGenerator
             $headTag = $tsfe->cObj->stdWrap($headTag, $tsfe->pSetup['headTag.']);
         }
         $pageRenderer->setHeadTag($headTag);
+        */
         // Setting charset meta tag:
         $pageRenderer->setCharSet($theCharset);
         $pageRenderer->addInlineComment('	This website is powered by TYPO3 - inspiring people to share!
@@ -376,6 +370,7 @@ class PageGenerator
         if ($tsfe->baseUrl) {
             $pageRenderer->setBaseUrl($tsfe->baseUrl);
         }
+        /*
         if ($tsfe->pSetup['shortcutIcon']) {
             $favIcon = ltrim($tsfe->tmpl->getFileName($tsfe->pSetup['shortcutIcon']), '/');
             $iconFileInfo = GeneralUtility::makeInstance(ImageInfo::class, PATH_site . $favIcon);
@@ -388,6 +383,7 @@ class PageGenerator
                 $pageRenderer->setFavIcon(PathUtility::getAbsoluteWebPath($tsfe->absRefPrefix . $favIcon));
             }
         }
+        */
         // Including CSS files
         if (is_array($tsfe->tmpl->setup['plugin.'])) {
             $stylesFromPlugins = '';
@@ -415,15 +411,19 @@ class PageGenerator
                 self::addCssToPageRenderer($stylesFromPlugins, false, 'InlineDefaultCss');
             }
         }
+        /*
         if ($tsfe->pSetup['stylesheet']) {
             $ss = $tsfe->tmpl->getFileName($tsfe->pSetup['stylesheet']);
             if ($ss) {
                 $pageRenderer->addCssFile($ss);
             }
         }
+        */
+
         /**********************************************************************/
         /* config.includeCSS / config.includeCSSLibs
         /**********************************************************************/
+        /*
         if (is_array($tsfe->pSetup['includeCSS.'])) {
             foreach ($tsfe->pSetup['includeCSS.'] as $key => $CSSfile) {
                 if (!is_array($CSSfile)) {
@@ -490,6 +490,7 @@ class PageGenerator
                 }
             }
         }
+        */
 
         // Stylesheets
         $style = '';
@@ -555,6 +556,8 @@ class PageGenerator
                 $pageRenderer->loadJquery($version, $source, $namespace);
             }
         }
+
+        /*
         // JavaScript library files
         if (is_array($tsfe->pSetup['includeJSLibs.'])) {
             foreach ($tsfe->pSetup['includeJSLibs.'] as $key => $JSfile) {
@@ -676,6 +679,7 @@ class PageGenerator
                 }
             }
         }
+        */
         // Headerdata
         if (is_array($tsfe->pSetup['headerData.'])) {
             $pageRenderer->addHeaderData($tsfe->cObj->cObjGet($tsfe->pSetup['headerData.'], 'headerData.'));
@@ -716,6 +720,7 @@ class PageGenerator
         } else {
             $tsfe->INTincScript_loadJSCode();
         }
+        /*
         $scriptJsCode = '';
 
         if ($tsfe->spamProtectEmailAddresses && $tsfe->spamProtectEmailAddresses !== 'ascii') {
@@ -805,7 +810,7 @@ class PageGenerator
                 $pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $tsfe->config['config']['compressJs']);
             }
         } elseif ($tsfe->config['config']['removeDefaultJS'] === 'external') {
-            /*
+
              * This keeps inlineJS from *_INT Objects from being moved to external files.
              * At this point in frontend rendering *_INT Objects only have placeholders instead
              * of actual content so moving these placeholders to external files would
@@ -813,7 +818,7 @@ class PageGenerator
              *     b) the needed JS would never get included to the page
              * Therefore inlineJS from *_INT Objects must not be moved to external files but
              * kept internal.
-             */
+
             $inlineJSint = '';
             self::stripIntObjectPlaceholder($inlineJS, $inlineJSint);
             if ($inlineJSint) {
@@ -876,6 +881,7 @@ class PageGenerator
         if ($tsfe->config['config']['concatenateJsAndCss']) {
             $pageRenderer->enableConcatenateFiles();
         }
+        */
         // Add header data block
         if ($tsfe->additionalHeaderData) {
             $pageRenderer->addHeaderData(implode(LF, $tsfe->additionalHeaderData));
@@ -1147,11 +1153,11 @@ class PageGenerator
     }
 
     /**
-     * @return PageRenderer
+     * @return PageRendererInterface
      */
     protected static function getPageRenderer()
     {
-        return GeneralUtility::makeInstance(PageRenderer::class);
+        return ApplicationDelegateFactory::getConfiguredApplicationDelegate()->getPageRenderer();
     }
 
     /**
@@ -1163,6 +1169,7 @@ class PageGenerator
      */
     protected static function addCssToPageRenderer($cssStyles, $excludeFromConcatenation = false, $inlineBlockName = 'TSFEinlineStyle')
     {
+        /*
         if (empty($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile'])) {
             self::getPageRenderer()->addCssInlineBlock($inlineBlockName, $cssStyles, !empty($GLOBALS['TSFE']->config['config']['compressCss']));
         } else {
@@ -1177,5 +1184,6 @@ class PageGenerator
                 $excludeFromConcatenation
             );
         }
+        */
     }
 }

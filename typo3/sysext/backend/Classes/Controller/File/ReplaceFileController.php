@@ -102,8 +102,8 @@ class ReplaceFileController extends AbstractModule
                 ->retrieveFileOrFolderObject('file:' . $this->uid);
         }
         if (!$this->fileOrFolderObject) {
-            $title = $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
-            $message = $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
+            $title = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
+            $message = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1436895930);
         }
         if ($this->fileOrFolderObject->getStorage()->getUid() === 0) {
@@ -162,7 +162,7 @@ class ReplaceFileController extends AbstractModule
         if ($this->returnUrl) {
             $returnButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($returnButton);
         }

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Application\ApplicationDelegateFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -78,7 +79,7 @@ abstract class AbstractContentObject
     protected function getPageRenderer()
     {
         if ($this->pageRenderer === null) {
-            $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+            $this->pageRenderer = ApplicationDelegateFactory::getConfiguredApplicationDelegate()->getPageRenderer();
         }
 
         return $this->pageRenderer;

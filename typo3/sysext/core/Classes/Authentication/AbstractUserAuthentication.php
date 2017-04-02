@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Sv\AuthenticationService;
 
 /**
  * Authentication of users in TYPO3
@@ -662,11 +661,13 @@ abstract class AbstractUserAuthentication
         ) {
             // Use 'auth' service to find the user
             // First found user will be used
+            $tempuser = $this->user = BackendUtility::getRecordRaw($this->user_table, sprintf('%s = \'%s\'', $this->username_column, $loginData['uname']));
+            $tempuserArr[] = $tempuser;
+            $authenticated = $tempuser['password'] === $loginData['uident'];
+            /*
             $subType = 'getUser' . $this->loginType;
-            /** @var AuthenticationService $serviceObj */
             foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObj) {
                 if ($row = $serviceObj->getUser()) {
-                    $tempuserArr[] = $row;
                     if ($this->writeDevLog) {
                         GeneralUtility::devLog('User found: ' . GeneralUtility::arrayToLogString($row, [$this->userid_column, $this->username_column]), self::class, 0);
                     }
@@ -686,6 +687,7 @@ abstract class AbstractUserAuthentication
             if ($this->writeDevLog && !empty($tempuserArr)) {
                 GeneralUtility::devLog(count($tempuserArr) . ' user records found by services', self::class);
             }
+            */
         }
 
         // If no new user was set we use the already found user session

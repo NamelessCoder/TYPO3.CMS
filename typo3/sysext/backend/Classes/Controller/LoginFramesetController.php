@@ -17,7 +17,9 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Application\ApplicationDelegateFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Page\PageRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -63,7 +65,7 @@ class LoginFramesetController
         $this->getDocumentTemplate()->startPage($title);
 
         // Create the frameset for the window
-        $this->content = $this->getPageRenderer()->render(PageRenderer::PART_HEADER) . '
+        $this->content = $this->getPageRenderer()->render(PageRendererInterface::PART_HEADER) . '
 			<frameset rows="*,1">
 				<frame name="login" src="index.php?loginRefresh=1" marginwidth="0" marginheight="0" scrolling="no" noresize="noresize" />
 				<frame name="dummy" src="' . htmlspecialchars(BackendUtility::getModuleUrl('dummy')) . '" marginwidth="0" marginheight="0" scrolling="auto" noresize="noresize" />
@@ -82,10 +84,10 @@ class LoginFramesetController
     }
 
     /**
-     * @return PageRenderer
+     * @return PageRendererInterface
      */
     protected function getPageRenderer()
     {
-        return GeneralUtility::makeInstance(PageRenderer::class);
+        return ApplicationDelegateFactory::getConfiguredApplicationDelegate()->getPageRenderer();
     }
 }

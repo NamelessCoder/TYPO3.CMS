@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutView;
+use TYPO3\CMS\Core\Application\ApplicationDelegateFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Page\PageRendererInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -867,7 +869,7 @@ class PageLayoutController
         $dbList->setLMargin = 0;
         $dbList->doEdit = $this->EDIT_CONTENT;
         $dbList->ext_CALC_PERMS = $this->CALC_PERMS;
-        $dbList->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
+        $dbList->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
         $dbList->id = $this->id;
         $dbList->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 0, 10);
         $dbList->option_newWizard = $this->modTSconfig['properties']['disableNewContentElementWizard'] ? 0 : 1;
@@ -975,7 +977,7 @@ class PageLayoutController
             $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
             $toggleSearchFormButton = $this->buttonBar->makeLinkButton()
                 ->setClasses('t3js-toggle-search-toolbox')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
                 ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL))
                 ->setHref('#');
             $this->buttonBar->addButton($toggleSearchFormButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
@@ -1033,7 +1035,7 @@ class PageLayoutController
         if (!VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
             $viewButton = $this->buttonBar->makeLinkButton()
                 ->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                 ->setIcon($this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL))
                 ->setHref('#');
 
@@ -1059,7 +1061,7 @@ class PageLayoutController
         if (!$this->modTSconfig['properties']['disableAdvanced']) {
             $clearCacheButton = $this->buttonBar->makeLinkButton()
                 ->setHref(BackendUtility::getModuleUrl($this->moduleName, ['id' => $this->pageinfo['uid'], 'clear_cache' => '1']))
-                ->setTitle($lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
+                ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
         }
@@ -1261,11 +1263,11 @@ class PageLayoutController
     /**
      * Returns current PageRenderer
      *
-     * @return PageRenderer
+     * @return PageRendererInterface
      */
     protected function getPageRenderer()
     {
-        return GeneralUtility::makeInstance(PageRenderer::class);
+        return ApplicationDelegateFactory::getConfiguredApplicationDelegate()->getPageRenderer();
     }
 
     /**

@@ -55,7 +55,7 @@ Example before:
         '_VERTICAL' => 1,
         'edit' => [
             'type' => 'popup',
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_edit_title',
+            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_edit_title',
             'module' => [
                 'name' => 'wizard_edit',
             'popup_onlyOpenIfSelected' => true,
@@ -64,7 +64,7 @@ Example before:
         ],
         'add' => [
             'type' => 'script',
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_add_title',
+            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_add_title',
             'icon' => 'actions-add',
             'params' => [
                 'table' => 'be_groups',
@@ -77,7 +77,7 @@ Example before:
         ],
         'list' => [
             'type' => 'script',
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_list_title',
+            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.usergroup_list_title',
             'icon' => 'actions-system-list-open',
             'params' => [
                 'table' => 'be_groups',
@@ -647,7 +647,7 @@ Example of a typical group field before:
             'wizards' => [
                 'edit' => [
                     'type' => 'popup',
-                    'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.edit',
+                    'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit',
                     'module' => [
                         'name' => 'wizard_edit',
                     ],
@@ -657,7 +657,7 @@ Example of a typical group field before:
                 ],
                 'add' => [
                     'type' => 'script',
-                    'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.createNewPage',
+                    'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.createNewPage',
                     'icon' => 'actions-add',
                     'params' => [
                         'table' => 'be_users',
@@ -670,7 +670,7 @@ Example of a typical group field before:
                 ],
                 'list' => [
                     'type' => 'script',
-                    'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.list',
+                    'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.list',
                     'icon' => 'actions-system-list-open',
                     'params' => [
                         'table' => 'be_groups',

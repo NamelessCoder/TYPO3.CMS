@@ -18,6 +18,7 @@
  *
  * The description of the various options is stored in the DefaultConfigurationDescription.php file
  */
+
 return [
     'GFX' => [ // Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
         'thumbnails' => true,
@@ -39,6 +40,9 @@ return [
         'processor_colorspace' => 'RGB',
         'jpg_quality' => 70,
         'png_truecolor' => true,
+    ],
+    'APP' => [
+        'delegate' => \TYPO3\CMS\Core\Application\StandardApplicationDelegate::class
     ],
     'SYS' => [
         // System related concerning both frontend and backend.
@@ -904,12 +908,12 @@ return [
 				sys_category.after = tt_content
 			}
 			mod.web_list.searchLevel.items {
-				-1 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.infinite
-				0 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.0
-				1 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.1
-				2 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.2
-				3 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.3
-				4 = EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.4
+				-1 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.infinite
+				0 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.0
+				1 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.1
+				2 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.2
+				3 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.3
+				4 = EXT:core/Resources/Private/Language/locallang_core.xlf:labels.searchLevel.4
 			}
 			mod.wizards.newRecord.pages.show.pageInside=1
 			mod.wizards.newRecord.pages.show.pageAfter=1

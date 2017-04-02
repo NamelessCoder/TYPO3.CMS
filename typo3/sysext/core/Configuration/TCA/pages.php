@@ -4,14 +4,14 @@ return [
         'label' => 'title',
         'tstamp' => 'tstamp',
         'sortby' => 'sorting',
-        'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:pages',
+        'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages',
         'type' => 'doktype',
         'versioningWS' => true,
         'origUid' => 't3_origuid',
         'delete' => 'deleted',
         'crdate' => 'crdate',
         'hideAtCopy' => true,
-        'prependAtCopy' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
+        'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'cruser_id' => 'cruser_id',
         'editlock' => 'editlock',
         'useColumnsForDefaultValues' => 'doktype,fe_group,hidden',
@@ -66,7 +66,7 @@ return [
     'columns' => [
         'doktype' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.type',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -76,7 +76,7 @@ return [
                         '--div--'
                     ],
                     [
-                        'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:doktype.I.0',
+                        'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:doktype.I.0',
                         (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
                         'apps-pagetree-page-default'
                     ],
@@ -109,12 +109,12 @@ return [
                         '--div--'
                     ],
                     [
-                        'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:doktype.I.folder',
+                        'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:doktype.I.folder',
                         (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER,
                         'apps-pagetree-folder-default'
                     ],
                     [
-                        'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:doktype.I.2',
+                        'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:doktype.I.2',
                         (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER,
                         'apps-filetree-folder-recycler'
                     ],
@@ -128,7 +128,7 @@ return [
             ]
         ],
         'title' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:title',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:title',
             'config' => [
                 'type' => 'input',
                 'size' => 50,
@@ -149,18 +149,18 @@ return [
         ],
         'php_tree_stop' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:php_tree_stop',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:php_tree_stop',
             'config' => [
                 'type' => 'check',
                 'items' => [
                     '1' => [
-                        '0' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'
                     ]
                 ]
             ]
         ],
         't3ver_label' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
             'config' => [
                 'type' => 'input',
                 'size' => 23,
@@ -169,12 +169,12 @@ return [
         ],
         'editlock' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:editlock',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:editlock',
             'config' => [
                 'type' => 'check',
                 'items' => [
                     '1' => [
-                        '0' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'
                     ]
                 ]
             ]
@@ -194,7 +194,7 @@ return [
         ],
         'starttime' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -204,7 +204,7 @@ return [
         ],
         'endtime' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime',
             'config' => [
                 'type' => 'input',
                 'renderType' => 'inputDateTime',
@@ -217,13 +217,13 @@ return [
         ],
         'layout' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.layout',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.layout',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
-                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
+                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
                         '0'
                     ],
                     [
@@ -244,7 +244,7 @@ return [
         ],
         'fe_group' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.fe_group',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
@@ -252,15 +252,15 @@ return [
                 'maxitems' => 20,
                 'items' => [
                     [
-                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
+                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login',
                         -1
                     ],
                     [
-                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
+                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login',
                         -2
                     ],
                     [
-                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
+                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups',
                         '--div--'
                     ]
                 ],
@@ -277,7 +277,7 @@ return [
                 'type' => 'check',
                 'items' => [
                     '1' => [
-                        '0' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'
                     ]
                 ]
             ]
@@ -352,13 +352,13 @@ return [
             ]
         ],
         'urltype' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.type',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.type',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
-                        'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.automatic',
+                        'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.automatic',
                         '0'
                     ],
                     [
@@ -409,7 +409,7 @@ return [
                 'renderType' => 'selectSingle',
                 'items' => [
                     [
-                        'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
+                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
                         0
                     ],
                     [
@@ -491,7 +491,7 @@ return [
             ]
         ],
         'shortcut' => [
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.shortcut_page',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.shortcut_page',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -561,7 +561,7 @@ return [
         ],
         'keywords' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.keywords',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.keywords',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
@@ -570,7 +570,7 @@ return [
         ],
         'description' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.description',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.description',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
@@ -588,7 +588,7 @@ return [
         ],
         'author' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.author',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.author',
             'config' => [
                 'type' => 'input',
                 'size' => 23,
@@ -598,7 +598,7 @@ return [
         ],
         'author_email' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.email',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.email',
             'config' => [
                 'type' => 'input',
                 'size' => 23,
@@ -616,32 +616,32 @@ return [
                         'types' => [
                             '0' => [
                                 'showitem' => '
-                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                    --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                     --palette--;;filePalette'
                             ],
                             \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => [
                                 'showitem' => '
-                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                    --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                     --palette--;;filePalette'
                             ],
                             \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => [
                                 'showitem' => '
-                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                    --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                     --palette--;;filePalette'
                             ],
                             \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => [
                                 'showitem' => '
-                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.audioOverlayPalette;audioOverlayPalette,
+                                    --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.audioOverlayPalette;audioOverlayPalette,
                                     --palette--;;filePalette'
                             ],
                             \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => [
                                 'showitem' => '
-                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.videoOverlayPalette;videoOverlayPalette,
+                                    --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.videoOverlayPalette;videoOverlayPalette,
                                     --palette--;;filePalette'
                             ],
                             \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => [
                                 'showitem' => '
-                                    --palette--;LLL:EXT:lang/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
+                                    --palette--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
                                     --palette--;;filePalette'
                             ]
                         ],
@@ -656,7 +656,7 @@ return [
                 'type' => 'check',
                 'items' => [
                     '1' => [
-                        '0' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'
                     ]
                 ]
             ]

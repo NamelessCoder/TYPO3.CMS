@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1415814816" source-language="en" datatype="plaintext" original="messages" date="2012-10-17T19:30:32Z" product-name="extbase">
+		<header/>
+		<body>
+			<trans-unit id="property.error">
+				<source>Validation errors for property "%s"</source>
+			</trans-unit>
+			<trans-unit id="validator.emailaddress.notvalid">
+				<source>The given subject was not a valid email address.</source>
+			</trans-unit>
+			<trans-unit id="validator.stringlength.between">
+				<source>The length of the given string was not between %s and %s characters.</source>
+			</trans-unit>
+			<trans-unit id="validator.stringlength.less">
+				<source>The length of the given string is less than %s characters.</source>
+			</trans-unit>
+			<trans-unit id="validator.string.notvalid">
+				<source>A valid string is expected.</source>
+			</trans-unit>
+			<trans-unit id="validator.stringlength.exceed">
+				<source>The length of the given string exceeded %s characters.</source>
+			</trans-unit>
+			<trans-unit id="validator.alphanumeric.notvalid">
+				<source>The given subject was not a valid alphanumeric string.</source>
+			</trans-unit>
+			<trans-unit id="validator.datetime.notvalid">
+				<source>The given subject was not a valid DateTime. Got: '%s'</source>
+			</trans-unit>
+			<trans-unit id="validator.genericobject.noobject">
+				<source>Value is no object.</source>
+			</trans-unit>
+			<trans-unit id="validator.float.notvalid">
+				<source>The given subject was not a valid float.</source>
+			</trans-unit>
+			<trans-unit id="validator.text.notvalid">
+				<source>The given subject was not a valid text (e.g. contained XML tags).</source>
+			</trans-unit>
+			<trans-unit id="validator.regularexpression.empty">
+				<source>The regular expression was empty.</source>
+			</trans-unit>
+			<trans-unit id="validator.regularexpression.nomatch">
+				<source>The given subject did not match the pattern.</source>
+			</trans-unit>
+			<trans-unit id="validator.regularexpression.error">
+				<source>The regular expression '%s' contained an error.</source>
+			</trans-unit>
+			<trans-unit id="validator.numberrange.notvalid">
+				<source>The given subject was not a valid number.</source>
+			</trans-unit>
+			<trans-unit id="validator.numberrange.range">
+				<source>The given subject was not in the valid range (%s - %s).</source>
+			</trans-unit>
+			<trans-unit id="validator.notempty.null">
+				<source>The given subject was NULL.</source>
+			</trans-unit>
+			<trans-unit id="validator.notempty.empty">
+				<source>The given subject was empty.</source>
+			</trans-unit>
+			<trans-unit id="validator.number.notvalid">
+				<source>The given subject was not a valid number.</source>
+			</trans-unit>
+			<trans-unit id="validator.integer.notvalid">
+				<source>The given subject was not a valid integer.</source>
+			</trans-unit>
+			<trans-unit id="validator.boolean.nottrue">
+				<source>The given subject was not true.</source>
+			</trans-unit>
+			<trans-unit id="validator.boolean.notfalse">
+				<source>The given subject was not false.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_phpass">
+				<source>Portable PHP password hashing (phpass)</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_md5">
+				<source>MD5 salted hashing (secure)</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.title.tx_saltedpasswords_salts_blowfish">
+				<source>Blowfish salted hashing (advanced)</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.title.phpasssalt">
+				<source>Portable PHP password hashing (phpass)</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.title.md5salt">
+				<source>MD5 salted hashing (secure)</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.title.blowfishsalt">
+				<source>Blowfish salted hashing (advanced)</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.title.pbkdf2salt">
+				<source>PBKDF2 key derivation (advanced)</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.name">
+				<source>Convert user passwords to salted hashes</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.description">
+				<source>Update all frontend and backend user passwords to salted hashes. This task deactivates itself when completed.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.numberOfRecords">
+				<source>The number of records to process on each run</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.invalidNumberOfRecords">
+				<source>The number of records to process on each run must be greater than zero and numeric.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.canDeactivateSelf">
+				<source>Deactivate if all records are converted</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.deactivateself">
+				<source>Deactivate=</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.numberofrecords">
+				<source>Number of records=</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.header.noErrorsFound">
+				<source>No errors were found</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.noErrorsFound">
+				<source>SaltedPasswords has been configured correctly and works as expected.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.header.errorsFound">
+				<source>Errors found in your configuration</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.errorsFound">
+				<source>SaltedPasswords will not work until these problems have been resolved:</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.header.warningsFound">
+				<source>Warnings about your configuration</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningsFound">
+				<source>SaltedPasswords might behave different than expected:</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.header.additionalInformation">
+				<source>Additional information</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.securityWarning">
+				<source>Note, that a wrong configuration might have impact on the security of your TYPO3 installation and the usability of the backend.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.backendSsl">
+				<source>The backend is configured to use SaltedPasswords over SSL.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.backendRsa">
+				<source>The backend is configured to use SaltedPasswords with RSA authentication.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.openSslMissing">
+				<source>Using the extension "rsaauth" is not possible, as no encryption backend is available. Please install and configure the PHP extension "openssl". See </source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.backendSecurityLevelNotRsa">
+				<source>The "rsaauth" extension is installed, but TYPO3 is not configured to use it during login. Use the Install Tool to set the Login Security Level for the backend to "rsa" ($TYPO3_CONF_VARS['BE']['loginSecurityLevel'])</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsIntro">
+				<source>SaltedPasswords is used without any transfer encryption, this means your passwords are sent in plain text. Please install rsaauth to secure your passwords submits.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsFirstItem">
+				<source>Install the "rsaauth" extension and use the Install Tool to set the Login Security Level for the backend to "rsa" ($TYPO3_CONF_VARS['BE']['loginSecurityLevel'])</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsSecondItem" xml:space="preserve">
+				<source>If you have the option to use SSL, you can also configure your backend for SSL usage:
+Use the Install Tool to set the Security-Level for the backend to "normal" ($TYPO3_CONF_VARS['BE']['loginSecurityLevel']) and the SSL-locking option to a value greater than "0" (see description - $TYPO3_CONF_VARS['BE']['lockSSL'])</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.rsaInstructionsFootnote">
+				<source>It is also possible to use "lockSSL" and "rsa" Login Security Level at the same time.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSalted">
+				<source>SaltedPasswords has been configured to be the only authentication service for the backend. Additionally, usage of salted passwords is enforced (forceSalted). The result is that there is no chance to login with users not having a salted password hash.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.label.warning">
+				<source>WARNING:</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSaltedNoteForBackend">
+				<source>This may lock you out of the backend!</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoOnlyBackendAuthService">
+				<source>SaltedPasswords has been configured to be the only authentication service for the backend. This means that other services like "ipauth", "openid", etc. will be ignored (except "rsauth", which is implicitely used).</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoForceSalted" xml:space="preserve">
+				<source>SaltedPasswords has been configured to enforce salted passwords (forceSalted).
+This means that only passwords in the format of this extension will succeed for login.
+</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.errorForceSaltedAndUpdatePassword" xml:space="preserve">
+				<source>SaltedPasswords is configured wrong and will not work as expected:
+It is not possible to set "updatePasswd" and "forceSalted" at the same time. Please disable either one of them.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.errorHashMethodNotAvailable">
+				<source>The selected method for hashing your salted passwords is not available on this system! Please check your configuration.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.label.important">
+				<source>IMPORTANT:</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferent">
+				<source>Frontend requirements for SaltedPasswords are not met, therefore the authentication will not work even if it was explicitly enabled for frontend usage:</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentFirstItem">
+				<source>Install the "rsaauth" extension and use the Install Tool to set the Login Security Level for the frontend to "rsa" ($TYPO3_CONF_VARS['FE']['loginSecurityLevel'])</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentSecondItem">
+				<source>Alternatively, use the Install Tool to set the Login Security Level for the frontend to "normal" ($TYPO3_CONF_VARS['FE']['loginSecurityLevel'])</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoLoginSecurityLevelDifferentNote">
+				<source>Make sure that the Login Security Level is not set to "" or "challenged"!</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.okFeRsaauthLoaded">
+				<source>The frontend is configured to use SaltedPasswords with RSA authentication.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningRsaauthNotInstalledButConfigured">
+				<source>The "rsaauth" extension is not installed, but TYPO3 CMS is configured to use it. Either install the extension or adapt the configuration by setting [FE][loginSecurityLevel] to "normal" in the Install Tool.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSaltedNoteForFrontend">
+				<source>Because of this, it is not possible to login with users not having a salted password hash (e.g. existing frontend users).</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoOnlyFrontendAuthService">
+				<source>SaltedPasswords has been configured to be the only authentication service for frontend logins. This means that other services like "ipauth", "openid", etc. will be ignored.</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.warningForceSaltedNote2">
+				<source>This has the effect that passwords that were set before SaltedPasswords was used will not work (in fact, they need to be redefined).</source>
+			</trans-unit>
+			<trans-unit id="ext.saltedpasswords.configuration.message.infoSaltedpasswordsFrontendDisabled">
+				<source>SaltedPasswords has been disabled for frontend users.</source>
+			</trans-unit>
+            <trans-unit id="widget.pagination.previous">
+                <source>previous</source>
+            </trans-unit>
+            <trans-unit id="widget.pagination.next">
+                <source>next</source>
+            </trans-unit>
+            <trans-unit id="widget.pagination.first">
+                <source>first</source>
+            </trans-unit>
+            <trans-unit id="widget.pagination.last">
+                <source>last</source>
+            </trans-unit>
+            <trans-unit id="widget.pagination.records">
+                <source>Records</source>
+            </trans-unit>
+            <trans-unit id="widget.pagination.page">
+                <source>Page</source>
+            </trans-unit>
+            <trans-unit id="widget.pagination.refresh">
+                <source>Refresh</source>
+            </trans-unit>
+            <trans-unit id="viewhelper.format.bytes.units">
+                <source>B,KB,MB,GB,TB,PB,EB,ZB,YB</source>
+            </trans-unit>
+			<trans-unit id="state.error">
+				<source>Error</source>
+			</trans-unit>
+			<trans-unit id="button.downloadAll">
+				<source>Download all</source>
+			</trans-unit>
+			<trans-unit id="button.download">
+				<source>Download</source>
+			</trans-unit>
+			<trans-unit id="button.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="button.activate">
+				<source>Activate</source>
+			</trans-unit>
+			<trans-unit id="button.deactivate">
+				<source>Deactivate</source>
+			</trans-unit>
+			<trans-unit id="button.complete">
+				<source>Complete</source>
+			</trans-unit>
+			<trans-unit id="button.loading">
+				<source>Loading</source>
+			</trans-unit>
+
+			<trans-unit id="header.languages">
+				<source>Installed Languages</source>
+			</trans-unit>
+			<trans-unit id="header.translations">
+				<source>Translation Overview</source>
+			</trans-unit>
+
+			<trans-unit id="flashmessage.error">
+				<source>Error</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.information">
+				<source>Information</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.success">
+				<source>Success</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.multipleErrors">
+				<source>Several requests have been failed. Please check your internet connection!</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.updateComplete">
+				<source>The translation update has been successfully completed.</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.canceled">
+				<source>The process has been canceled.</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.languageActivated">
+				<source>Language was successfully activated.</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.languageDeactivated">
+				<source>Language was successfully deactivated.</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.languageRemoved">
+				<source>Language was successfully deactivated and removed.</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.errorOccurred">
+				<source>The request has failed.</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.noLanguageActivated">
+				<source>No language activated. Please activate at least one language.</source>
+			</trans-unit>
+
+			<trans-unit id="table.ad">
+				<source>A/D</source>
+			</trans-unit>
+			<trans-unit id="table.ad.title">
+				<source>Activate / Deactivate</source>
+			</trans-unit>
+			<trans-unit id="table.language">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="table.locale">
+				<source>Locale</source>
+			</trans-unit>
+			<trans-unit id="table.extension">
+				<source>Extension</source>
+			</trans-unit>
+			<trans-unit id="table.actions">
+				<source>Actions</source>
+			</trans-unit>
+			<trans-unit id="table.date">
+				<source>Last update</source>
+			</trans-unit>
+			<trans-unit id="table.processing">
+				<source>Processing...</source>
+			</trans-unit>
+			<trans-unit id="table.search">
+				<source>Search:</source>
+			</trans-unit>
+			<trans-unit id="table.loadingRecords">
+				<source>Loading...</source>
+			</trans-unit>
+			<trans-unit id="table.zeroRecords">
+				<source>No matching records found</source>
+			</trans-unit>
+			<trans-unit id="table.emptyTable">
+				<source>No data available in table</source>
+			</trans-unit>
+			<trans-unit id="table.dateFormat">
+				<source>YYYY-MM-DD HH:mm</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -855,7 +855,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                 $viewLink = '';
                 if (!VersionState::cast($this->getPageLayoutController()->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                     $onClick = BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id), '', '', ('&L=' . $lP));
-                    $viewLink = '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
+                    $viewLink = '<a href="#" class="btn btn-default btn-sm" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' . $this->iconFactory->getIcon('actions-view', Icon::SIZE_SMALL)->render() . '</a>';
                 }
                 // Language overlay page header:
                 if ($lP) {
@@ -1596,12 +1596,12 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                     $params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
                     $confirm = $this->getLanguageService()->getLL('deleteWarning')
                         . BackendUtility::translationCount('tt_content', $row['uid'], (' '
-                                                                                       . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')));
+                                                                                       . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')));
                     $out .= '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params)) . '"'
                         . ' data-severity="warning"'
-                        . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
+                        . ' data-title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')) . '"'
                         . ' data-content="' . htmlspecialchars($confirm) . '" '
-                        . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
+                        . ' data-button-close-text="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')) . '"'
                         . ' title="' . htmlspecialchars($this->getLanguageService()->getLL('deleteItem')) . '">'
                         . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render() . '</a>';
                     if ($out && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
@@ -1710,7 +1710,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
             $hiddenHeaderNote = '';
             // If header layout is set to 'hidden', display an accordant note:
             if ($row['header_layout'] == 100) {
-                $hiddenHeaderNote = ' <em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.hidden')) . ']</em>';
+                $hiddenHeaderNote = ' <em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.hidden')) . ']</em>';
             }
             $outHeader = $row['date']
                 ? htmlspecialchars($this->itemLabels['date'] . ' ' . BackendUtility::date($row['date'])) . '<br />'
@@ -1848,7 +1848,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         if (!empty($label)) {
                             $out .= $this->linkEditContent('<strong>' . htmlspecialchars($this->getLanguageService()->sL($label)) . '</strong>', $row) . '<br />';
                         } else {
-                            $message = sprintf($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
+                            $message = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'), $row['list_type']);
                             $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
                         }
                     } else {
@@ -1871,7 +1871,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         }
                     } else {
                         $message = sprintf(
-                            $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
+                            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
                             $row['CType']
                         );
                         $out .= '<span class="label label-warning">' . htmlspecialchars($message) . '</span>';
@@ -2242,7 +2242,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
      *
      * @see \TYPO3\CMS\Recordlist\RecordList::main()
      * @see \TYPO3\CMS\Backend\Controller\ContextMenuController::clipboardAction()
-     * @see \TYPO3\CMS\Filelist\Controller\FileListController::indexAction()
+     * @see \TYPO3\CMS\Backend\Controller\FileListController::indexAction()
      */
     protected function initializeClipboard()
     {

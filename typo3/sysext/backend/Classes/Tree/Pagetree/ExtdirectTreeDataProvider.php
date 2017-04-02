@@ -159,7 +159,7 @@ class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTree
      */
     public function loadResources()
     {
-        $file = 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:';
+        $file = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:';
         $configuration = [
             'LLL' => [
                 'copyHint' => htmlspecialchars($GLOBALS['LANG']->sL($file . 'tree.copyHint')),

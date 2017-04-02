@@ -90,8 +90,8 @@ class RenameFileController extends AbstractModule
             $this->fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->target);
         }
         if (!$this->fileOrFolderObject) {
-            $title = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
-            $message = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
+            $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_file_list.xlf:paramError');
+            $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_file_list.xlf:targetNoDir');
             throw new \RuntimeException($title . ': ' . $message, 1294586844);
         }
         if ($this->fileOrFolderObject->getStorage()->getUid() === 0) {
@@ -162,17 +162,17 @@ class RenameFileController extends AbstractModule
         if ($this->returnUrl) {
             $backButton = $buttonBar->makeLinkButton()
                 ->setHref($this->returnUrl)
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
+                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack'))
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton);
         }
 
         $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelArray([
-            'file_rename.actions.cancel' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.actions.cancel'),
-            'file_rename.actions.rename' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.actions.rename'),
-            'file_rename.actions.override' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.actions.override'),
-            'file_rename.exists.title' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.exists.title'),
-            'file_rename.exists.description' => $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:file_rename.exists.description'),
+            'file_rename.actions.cancel' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_rename.actions.cancel'),
+            'file_rename.actions.rename' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_rename.actions.rename'),
+            'file_rename.actions.override' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_rename.actions.override'),
+            'file_rename.exists.title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_rename.exists.title'),
+            'file_rename.exists.description' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_rename.exists.description'),
         ]);
 
         // Rendering of the output via fluid

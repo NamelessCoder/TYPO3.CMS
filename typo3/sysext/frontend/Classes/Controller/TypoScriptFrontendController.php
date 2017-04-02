@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Controller;
 
 use Doctrine\DBAL\Exception\ConnectionException;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
+use TYPO3\CMS\Core\Application\ApplicationDelegateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
@@ -893,7 +894,7 @@ class TypoScriptFrontendController
         if ($this->pageRenderer !== null) {
             return;
         }
-        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $this->pageRenderer = ApplicationDelegateFactory::getConfiguredApplicationDelegate()->getPageRenderer();
         $this->pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
     }
 
@@ -1726,7 +1727,7 @@ class TypoScriptFrontendController
      * @param array $row The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
      * @param bool $bypassGroupCheck Bypass group-check
      * @return bool TRUE, if record is viewable.
-     * @see TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkPagerecordForIncludeSection()
+     * @see \TYPO3\CMS\Frontend\\ContentObject\ContentObjectRenderer::getTreeList(), checkPagerecordForIncludeSection()
      */
     public function checkEnableFields($row, $bypassGroupCheck = false)
     {
@@ -1772,7 +1773,7 @@ class TypoScriptFrontendController
      * @param array $row The page record to evaluate (needs fields: extendToSubpages + hidden, starttime, endtime, fe_group)
      * @return bool Returns TRUE if either extendToSubpages is not checked or if the enableFields does not disable the page record.
      * @access private
-     * @see checkEnableFields(), TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer::getTreeList(), checkRootlineForIncludeSection()
+     * @see checkEnableFields(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(), checkRootlineForIncludeSection()
      */
     public function checkPagerecordForIncludeSection($row)
     {
@@ -2495,53 +2496,58 @@ class TypoScriptFrontendController
                 $this->sPre = $this->tmpl->setup['types.'][$this->type];
                 $this->pSetup = $this->tmpl->setup[$this->sPre . '.'];
                 if (!is_array($this->pSetup)) {
-                    $message = 'The page is not configured! [type=' . $this->type . '][' . $this->sPre . '].';
-                    if ($this->checkPageUnavailableHandler()) {
-                        $this->pageUnavailableAndExit($message);
-                    } else {
-                        $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
-                        GeneralUtility::sysLog($message, 'cms', GeneralUtility::SYSLOG_SEVERITY_ERROR);
-                        throw new ServiceUnavailableException($message . ' ' . $explanation, 1294587217);
-                    }
-                } else {
-                    if (!isset($this->config['config'])) {
-                        $this->config['config'] = [];
-                    }
-                    // Filling the config-array, first with the main "config." part
-                    if (is_array($this->tmpl->setup['config.'])) {
-                        ArrayUtility::mergeRecursiveWithOverrule($this->tmpl->setup['config.'], $this->config['config']);
-                        $this->config['config'] = $this->tmpl->setup['config.'];
-                    }
-                    // override it with the page/type-specific "config."
-                    if (is_array($this->pSetup['config.'])) {
-                        ArrayUtility::mergeRecursiveWithOverrule($this->config['config'], $this->pSetup['config.']);
-                    }
-                    if ($this->config['config']['typolinkEnableLinksAcrossDomains']) {
-                        $this->config['config']['typolinkCheckRootline'] = true;
-                    }
-                    // Set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
-                    if (!isset($this->config['config']['removeDefaultJS'])) {
-                        $this->config['config']['removeDefaultJS'] = 'external';
-                    }
-                    if (!isset($this->config['config']['inlineStyle2TempFile'])) {
-                        $this->config['config']['inlineStyle2TempFile'] = 1;
-                    }
+                    $this->config['config'] = [];
+                    $this->pSetup['page'] = 'PAGE';
+                    $this->pSetup['page.'] = [
+                        '10' => 'CONTENT',
+                        '10.' => [
+                            'table' => 'tt_content',
+                            #'renderObj' => $this->config['tt_content'],
+                            #'renderObj.' => $this->config['tt_content.'],
+                            'select' => [
+                                'orderBy' => 'sorting'
+                            ]
+                        ]
+                    ];
+                }
 
-                    if (!isset($this->config['config']['compressJs'])) {
-                        $this->config['config']['compressJs'] = 0;
-                    }
-                    // Processing for the config_array:
-                    $this->config['rootLine'] = $this->tmpl->rootLine;
-                    $this->config['mainScript'] = trim($this->config['config']['mainScript']) ?: 'index.php';
-                    if (isset($this->config['config']['mainScript']) || $this->config['mainScript'] !== 'index.php') {
-                        $this->logDeprecatedTyposcript('config.mainScript', 'Setting the frontend script to something else than index.php is deprecated as of TYPO3 v8, and will not be possible in TYPO3 v9 without a custom extension');
-                    }
-                    // Class for render Header and Footer parts
-                    if ($this->pSetup['pageHeaderFooterTemplateFile']) {
-                        $file = $this->tmpl->getFileName($this->pSetup['pageHeaderFooterTemplateFile']);
-                        if ($file) {
-                            $this->pageRenderer->setTemplateFile($file);
-                        }
+                if (!isset($this->config['config'])) {
+                    $this->config['config'] = [];
+                }
+                // Filling the config-array, first with the main "config." part
+                if (is_array($this->tmpl->setup['config.'])) {
+                    ArrayUtility::mergeRecursiveWithOverrule($this->tmpl->setup['config.'], $this->config['config']);
+                    $this->config['config'] = $this->tmpl->setup['config.'];
+                }
+                // override it with the page/type-specific "config."
+                if (is_array($this->pSetup['config.'])) {
+                    ArrayUtility::mergeRecursiveWithOverrule($this->config['config'], $this->pSetup['config.']);
+                }
+                if ($this->config['config']['typolinkEnableLinksAcrossDomains']) {
+                    $this->config['config']['typolinkCheckRootline'] = true;
+                }
+                // Set default values for removeDefaultJS and inlineStyle2TempFile so CSS and JS are externalized if compatversion is higher than 4.0
+                if (!isset($this->config['config']['removeDefaultJS'])) {
+                    $this->config['config']['removeDefaultJS'] = 'external';
+                }
+                if (!isset($this->config['config']['inlineStyle2TempFile'])) {
+                    $this->config['config']['inlineStyle2TempFile'] = 1;
+                }
+
+                if (!isset($this->config['config']['compressJs'])) {
+                    $this->config['config']['compressJs'] = 0;
+                }
+                // Processing for the config_array:
+                $this->config['rootLine'] = $this->tmpl->rootLine;
+                $this->config['mainScript'] = trim($this->config['config']['mainScript']) ?: 'index.php';
+                if (isset($this->config['config']['mainScript']) || $this->config['mainScript'] !== 'index.php') {
+                    $this->logDeprecatedTyposcript('config.mainScript', 'Setting the frontend script to something else than index.php is deprecated as of TYPO3 v8, and will not be possible in TYPO3 v9 without a custom extension');
+                }
+                // Class for render Header and Footer parts
+                if ($this->pSetup['pageHeaderFooterTemplateFile']) {
+                    $file = $this->tmpl->getFileName($this->pSetup['pageHeaderFooterTemplateFile']);
+                    if ($file) {
+                        $this->pageRenderer->setTemplateFile($file);
                     }
                 }
                 $timeTracker->pull();
@@ -3423,7 +3429,7 @@ class TypoScriptFrontendController
             /** @var PageRenderer $pageRenderer */
             $pageRenderer = unserialize($this->config['INTincScript_ext']['pageRenderer']);
             $this->pageRenderer = $pageRenderer;
-            GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
+            GeneralUtility::setSingletonInstance(get_class($pageRenderer), $pageRenderer);
         }
 
         $this->recursivelyReplaceIntPlaceholdersInContent();

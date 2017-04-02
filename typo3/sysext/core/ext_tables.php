@@ -1,6 +1,15 @@
 <?php
 defined('TYPO3_MODE') or die();
 
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\TYPO3\CMS\Extbase\Scheduler\Task::class] = [
+    'extension' => 'extbase',
+    'title' => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:task.name',
+    'description' => 'LLL:EXT:extbase/Resources/Private/Language/locallang_db.xlf:task.description',
+    'additionalFields' => \TYPO3\CMS\Extbase\Scheduler\FieldProvider::class
+];
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = \TYPO3\CMS\Extbase\Hook\DataHandler\CheckFlexFormValue::class;
+
 /**
  * $GLOBALS['PAGES_TYPES'] defines the various types of pages (field: doktype) the system
  * can handle and what restrictions may apply to them.
@@ -27,87 +36,122 @@ $GLOBALS['PAGES_TYPES'] = [
     ],
 ];
 
-/**
- * $TBE_MODULES contains the structure of the backend modules as they are
- * arranged in main- and sub-modules. Every entry in this array represents a
- * menu item on either first (key) or second level (value from list) in the
- * left menu in the TYPO3 backend
- * For information about adding modules to TYPO3 you should consult the
- * documentation found in "Inside TYPO3"
- */
-$GLOBALS['TBE_MODULES'] = [
-    'web' => 'list',
-    'file' => '',
-    'user' => '',
-    'tools' => '',
-    'system' => '',
-    'help' => '',
-    '_configuration' => [
-        'web' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_web.xlf',
-            'name' => 'web',
-            'iconIdentifier' => 'module-web'
-        ],
-        'file' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_file.xlf',
-            'navigationFrameModule' => 'file_navframe',
-            'name' => 'file',
-            'workspaces' => 'online,custom',
-            'iconIdentifier' => 'module-file'
-        ],
-        'user' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_usertools.xlf',
-            'name' => 'user',
-            'iconIdentifier' => 'status-user-backend'
-        ],
-        'tools' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_admintools.xlf',
-            'name' => 'tools',
-            'iconIdentifier' => 'module-tools'
-        ],
-        'system' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_system.xlf',
-            'name' => 'system',
-            'iconIdentifier' => 'module-system'
-        ],
-        'help' => [
-            'labels' => 'LLL:EXT:lang/Resources/Private/Language/locallang_mod_help.xlf',
-            'name' => 'help',
-            'iconIdentifier' => 'module-help'
+
+if (TYPO3_MODE === 'BE') {
+
+
+    /**
+     * $TBE_MODULES contains the structure of the backend modules as they are
+     * arranged in main- and sub-modules. Every entry in this array represents a
+     * menu item on either first (key) or second level (value from list) in the
+     * left menu in the TYPO3 backend
+     * For information about adding modules to TYPO3 you should consult the
+     * documentation found in "Inside TYPO3"
+     */
+    $GLOBALS['TBE_MODULES'] = [
+        'web' => 'list',
+        'file' => '',
+        'user' => '',
+        'tools' => '',
+        'system' => '',
+        'help' => '',
+        '_configuration' => [
+            'web' => [
+                'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web.xlf',
+                'name' => 'web',
+                'iconIdentifier' => 'module-web'
+            ],
+            'file' => [
+                'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
+                'navigationFrameModule' => 'file_navframe',
+                'name' => 'file',
+                'workspaces' => 'online,custom',
+                'iconIdentifier' => 'module-file'
+            ],
+            'user' => [
+                'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf',
+                'name' => 'user',
+                'iconIdentifier' => 'status-user-backend'
+            ],
+            'tools' => [
+                'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_admintools.xlf',
+                'name' => 'tools',
+                'iconIdentifier' => 'module-tools'
+            ],
+            'system' => [
+                'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_system.xlf',
+                'name' => 'system',
+                'iconIdentifier' => 'module-system'
+            ],
+            'help' => [
+                'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_help.xlf',
+                'name' => 'help',
+                'iconIdentifier' => 'module-help'
+            ]
         ]
-    ]
-];
+    ];
 
-// Register the page tree core navigation component
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('web', 'typo3-pagetree');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+        'system',
+        'extinstall',
+        '',
+        '',
+        [
+            'routeTarget' => \TYPO3\CMS\Install\Controller\BackendModuleController::class . '::index',
+            'access' => 'admin',
+            'name' => 'system_extinstall',
+            'icon' => 'EXT:core/Resources/Public/Icons/module-install.svg',
+            'labels' => 'LLL:EXT:core/Resources/Private/Language/BackendModule.xlf'
+        ]
+    );
 
-/**
- * $TBE_STYLES configures backend styles and colors; Basically this contains
- * all the values that can be used to create new skins for TYPO3.
- * For information about making skins to TYPO3 you should consult the
- * documentation found in "Inside TYPO3"
- */
-$GLOBALS['TBE_STYLES'] = [];
+    // Register the backend module
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'TYPO3.CMS.Lang',
+        'tools',
+        'language',
+        'after:extensionmanager',
+        [
+            'Language' => 'listLanguages, listTranslations, getTranslations, updateLanguage, updateTranslation, activateLanguage, deactivateLanguage, removeLanguage',
+        ],
+        [
+            'access' => 'admin',
+            'icon' => 'EXT:core/Resources/Public/Icons/module-lang.svg',
+            'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod.xlf',
+        ]
+    );
 
-/**
- * Setting up $TCA_DESCR - Context Sensitive Help (CSH)
- * For information about using the CSH API in TYPO3 you should consult the
- * documentation found in "Inside TYPO3"
- */
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:lang/Resources/Private/Language/locallang_csh_pages.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_users', 'EXT:lang/Resources/Private/Language/locallang_csh_be_users.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:lang/Resources/Private/Language/locallang_csh_be_groups.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_filemounts', 'EXT:lang/Resources/Private/Language/locallang_csh_sysfilem.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_language', 'EXT:lang/Resources/Private/Language/locallang_csh_syslang.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_news', 'EXT:lang/Resources/Private/Language/locallang_csh_sysnews.xlf');
-// General Core
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:lang/Resources/Private/Language/locallang_csh_corebe.xlf');
-// Web > Info
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:lang/Resources/Private/Language/locallang_csh_web_info.xlf');
-// Web > Func
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:lang/Resources/Private/Language/locallang_csh_web_func.xlf');
+    // Register the page tree core navigation component
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addCoreNavigationComponent('web', 'typo3-pagetree');
 
-if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
-    // extJS theme
-    $GLOBALS['TBE_STYLES']['extJS']['theme'] = 'EXT:core/Resources/Public/ExtJs/xtheme-t3skin.css';
+    /**
+     * $TBE_STYLES configures backend styles and colors; Basically this contains
+     * all the values that can be used to create new skins for TYPO3.
+     * For information about making skins to TYPO3 you should consult the
+     * documentation found in "Inside TYPO3"
+     */
+    $GLOBALS['TBE_STYLES'] = [];
+
+    /**
+     * Setting up $TCA_DESCR - Context Sensitive Help (CSH)
+     * For information about using the CSH API in TYPO3 you should consult the
+     * documentation found in "Inside TYPO3"
+     */
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('pages', 'EXT:core/Resources/Private/Language/locallang_csh_pages.xlf');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_users', 'EXT:core/Resources/Private/Language/locallang_csh_be_users.xlf');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('be_groups', 'EXT:core/Resources/Private/Language/locallang_csh_be_groups.xlf');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_filemounts', 'EXT:core/Resources/Private/Language/locallang_csh_sysfilem.xlf');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_language', 'EXT:core/Resources/Private/Language/locallang_csh_syslang.xlf');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('sys_news', 'EXT:core/Resources/Private/Language/locallang_csh_sysnews.xlf');
+    // General Core
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('xMOD_csh_corebe', 'EXT:core/Resources/Private/Language/locallang_csh_corebe.xlf');
+    // Web > Info
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_info', 'EXT:core/Resources/Private/Language/locallang_csh_web_info.xlf');
+    // Web > Func
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:core/Resources/Private/Language/locallang_csh_web_func.xlf');
+
+    if (TYPO3_MODE === 'BE' || TYPO3_MODE === 'FE' && isset($GLOBALS['BE_USER'])) {
+        // extJS theme
+        $GLOBALS['TBE_STYLES']['extJS']['theme'] = 'EXT:core/Resources/Public/ExtJs/xtheme-t3skin.css';
+    }
 }

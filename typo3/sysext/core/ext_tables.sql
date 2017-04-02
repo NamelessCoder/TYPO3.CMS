@@ -696,3 +696,17 @@ CREATE TABLE sys_category_record_mm (
 	KEY uid_local_foreign (uid_local,uid_foreign),
 	KEY uid_foreign_tablefield (uid_foreign,tablenames(40),fieldname(3),sorting_foreign)
 );
+
+#
+# Add field 'tx_extbase_type' to table 'fe_users'
+#
+CREATE TABLE fe_users (
+	tx_extbase_type varchar(255) DEFAULT '0' NOT NULL
+);
+
+#
+# Add field 'tx_extbase_type' to table 'fe_groups'
+#
+CREATE TABLE fe_groups (
+	tx_extbase_type varchar(255) DEFAULT '0' NOT NULL
+);

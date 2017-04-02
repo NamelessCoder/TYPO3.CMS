@@ -30,6 +30,7 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge($GLOBALS['TYPO
     'TEMPLATE'         => \TYPO3\CMS\Frontend\ContentObject\TemplateContentObject::class,
     'FLUIDTEMPLATE'    => \TYPO3\CMS\Frontend\ContentObject\FluidTemplateContentObject::class,
     'SVG'              => \TYPO3\CMS\Frontend\ContentObject\ScalableVectorGraphicsContentObject::class,
+    'APP'              => \TYPO3\CMS\Frontend\ContentObject\AppContentObject::class,
     'EDITPANEL'        => \TYPO3\CMS\Frontend\ContentObject\EditPanelContentObject::class
 ]);
 
@@ -47,6 +48,7 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_cms_showpic'] = \TYPO3\CMS\
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
     '
+
 # Content selection
 styles.content.get = CONTENT
 styles.content.get {
@@ -64,14 +66,15 @@ tt_content {
     key {
         field = CType
     }
-    default = TEXT
+    default = APP
     default {
-        field = CType
-        htmlSpecialChars = 1
-        wrap = <p style="background-color: yellow; padding: 0.5em 1em;"><strong>ERROR:</strong> Content Element with uid "{field:uid}" and type "|" has no rendering definition!</p>
-        wrap.insertData = 1
+        method = renderContentType
     }
 }
+
+page = PAGE
+page.10 < styles.content.get
+
     '
 );
 

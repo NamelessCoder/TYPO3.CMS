@@ -69,7 +69,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface
     {
         // @deprecated since TYPO3 v8, will be removed with TYPO3 v9
         // this is a fallback to convert references to old 'lang' locallang files to the new location
-        if (strpos($fileReference, 'EXT:lang/locallang_') === 0) {
+        if (strpos($fileReference, 'EXT:core/locallang_') === 0) {
             $mapping = [
                 'lang/locallang_alt_doc.xlf' => 'lang/Resources/Private/Language/locallang_alt_doc.xlf',
                 'lang/locallang_alt_intro.xlf' => 'lang/Resources/Private/Language/locallang_alt_intro.xlf',

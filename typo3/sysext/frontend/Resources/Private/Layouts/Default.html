@@ -1,0 +1,14 @@
+{escaping off}
+{xmlprologue}
+<html>
+    <head>
+        {code -> f:for(each: headerComments, as: code)}
+        <title><f:render section="Title" optional="1" /></title>
+        {code -> f:for(each: headerCode, as: code)}
+    </head>
+    <body>
+        <f:render section="Body" />
+        {code -> f:for(each: footerCode, as: code)}
+    </body>
+</html>
+

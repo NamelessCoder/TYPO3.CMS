@@ -211,7 +211,7 @@ abstract class AbstractFormElement extends AbstractNode
                 if (isset($formatOptions['appendAge']) && $formatOptions['appendAge']) {
                     $age = BackendUtility::calcAge(
                         $GLOBALS['EXEC_TIME'] - $itemValue,
-                        $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                     );
                     $value .= ' (' . $age . ')';
                 }
@@ -540,7 +540,7 @@ abstract class AbstractFormElement extends AbstractNode
 
                     $onlyIfSelectedJS = '';
                     if (isset($wizardConfiguration['popup_onlyOpenIfSelected']) && $wizardConfiguration['popup_onlyOpenIfSelected']) {
-                        $notSelectedText = $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.noSelItemForEdit');
+                        $notSelectedText = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.noSelItemForEdit');
                         $onlyIfSelectedJS =
                             'if (!TBE_EDITOR.curSelected(' . GeneralUtility::quoteJSvalue($itemName) . ')){' .
                                 'alert(' . GeneralUtility::quoteJSvalue($notSelectedText) . ');' .

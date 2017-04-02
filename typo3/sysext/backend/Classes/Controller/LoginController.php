@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Exception;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Application\ApplicationDelegateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
@@ -110,10 +111,10 @@ class LoginController
         // initialize $this->getLanguageService() again with $preferredBrowserLanguage
         if ($preferredBrowserLanguage !== 'default' && empty($this->getBackendUserAuthentication()->user['uid'])) {
             $this->getLanguageService()->init($preferredBrowserLanguage);
-            GeneralUtility::makeInstance(PageRenderer::class)->setLanguage($preferredBrowserLanguage);
+            ApplicationDelegateFactory::getConfiguredApplicationDelegate()->getPageRenderer()->setLanguage($preferredBrowserLanguage);
         }
 
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_login.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_login.xlf');
 
         // Setting the redirect URL to "index.php?M=main" if no alternative input is given
         $this->redirectToURL = $this->redirectUrl ?: BackendUtility::getModuleUrl('main');
@@ -150,8 +151,7 @@ class LoginController
      */
     public function main()
     {
-        /** @var $pageRenderer PageRenderer */
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer = ApplicationDelegateFactory::getConfiguredApplicationDelegate()->getPageRenderer();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Login');
 
         // Checking, if we should make a redirect.

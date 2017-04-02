@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Application\ApplicationDelegateFactory;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -68,7 +69,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
         }
         $inlineJS = implode(LF, $update);
 
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer = ApplicationDelegateFactory::getConfiguredApplicationDelegate()->getPageRenderer();
         $pageRenderer->loadJquery();
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter', 'function(FormEngineLinkBrowserAdapter) {
 			FormEngineLinkBrowserAdapter.updateFunctions = function() {' . $inlineJS . '};

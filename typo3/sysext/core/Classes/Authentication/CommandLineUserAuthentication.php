@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Saltedpasswords\Salt\SaltFactory;
 
 /**
  * TYPO3 backend user authentication on a CLI level
@@ -146,8 +145,6 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     protected function generateHashedPassword()
     {
         $cryptoService = GeneralUtility::makeInstance(Random::class);
-        $password = $cryptoService->generateRandomBytes(20);
-        $saltFactory = SaltFactory::getSaltingInstance(null, 'BE');
-        return $saltFactory->getHashedPassword($password);
+        return $cryptoService->generateRandomBytes(20);
     }
 }

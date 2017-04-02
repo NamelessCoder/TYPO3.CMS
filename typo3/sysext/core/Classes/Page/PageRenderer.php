@@ -30,19 +30,8 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * TYPO3 pageRender class (new in TYPO3 4.3.0)
  * This class render the HTML of a webpage, usable for BE and FE
  */
-class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
+class PageRenderer extends AbstractPageRenderer implements \TYPO3\CMS\Core\SingletonInterface, PageRendererInterface
 {
-    // Constants for the part to be rendered
-    const PART_COMPLETE = 0;
-    const PART_HEADER = 1;
-    const PART_FOOTER = 2;
-    // jQuery Core version that is shipped with TYPO3
-    const JQUERY_VERSION_LATEST = '3.2.1';
-    // jQuery namespace options
-    const JQUERY_NAMESPACE_NONE = 'none';
-    const JQUERY_NAMESPACE_DEFAULT = 'jQuery';
-    const JQUERY_NAMESPACE_DEFAULT_NOCONFLICT = 'defaultNoConflict';
-
     /**
      * @var bool
      */
@@ -84,36 +73,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected $csConvObj;
 
     /**
-     * @var \TYPO3\CMS\Core\Localization\Locales
-     */
-    protected $locales;
-
-    /**
-     * The language key
-     * Two character string or 'default'
-     *
-     * @var string
-     */
-    protected $lang;
-
-    /**
-     * List of language dependencies for actual language. This is used for local variants of a language
-     * that depend on their "main" language, like Brazilian Portuguese or Canadian French.
-     *
-     * @var array
-     */
-    protected $languageDependencies = [];
-
-    /**
      * @var \TYPO3\CMS\Core\Resource\ResourceCompressor
      */
     protected $compressor;
 
     // Arrays containing associative array for the included files
-    /**
-     * @var array
-     */
-    protected $jsFiles = [];
 
     /**
      * @var array
@@ -133,67 +97,14 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $cssFiles = [];
-
-    /**
-     * @var array
-     */
     protected $cssLibs = [];
-
-    /**
-     * The title of the page
-     *
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * Charset for the rendering
-     *
-     * @var string
-     */
-    protected $charSet;
 
     /**
      * @var string
      */
     protected $favIcon;
 
-    /**
-     * @var string
-     */
-    protected $baseUrl;
-
-    /**
-     * @var bool
-     */
-    protected $renderXhtml = true;
-
     // Static header blocks
-    /**
-     * @var string
-     */
-    protected $xmlPrologAndDocType = '';
-
-    /**
-     * @var array
-     */
-    protected $metaTags = [];
-
-    /**
-     * @var array
-     */
-    protected $inlineComments = [];
-
-    /**
-     * @var array
-     */
-    protected $headerData = [];
-
-    /**
-     * @var array
-     */
-    protected $footerData = [];
 
     /**
      * @var string
@@ -231,35 +142,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected $shortcutTag = '<link rel="shortcut icon" href="%1$s"%2$s />';
 
     // Static inline code blocks
-    /**
-     * @var array
-     */
-    protected $jsInline = [];
-
-    /**
-     * @var array
-     */
-    protected $jsFooterInline = [];
 
     /**
      * @var array
      */
     protected $extOnReadyCode = [];
-
-    /**
-     * @var array
-     */
-    protected $cssInline = [];
-
-    /**
-     * @var string
-     */
-    protected $bodyContent;
-
-    /**
-     * @var string
-     */
-    protected $templateFile;
 
     /**
      * @var array
@@ -278,54 +165,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * @var string
      */
     protected $extJsPath = 'EXT:core/Resources/Public/JavaScript/Contrib/extjs/';
-
-    /**
-     * The local directory where one can find jQuery versions and plugins
-     *
-     * @var string
-     */
-    protected $jQueryPath = 'EXT:core/Resources/Public/JavaScript/Contrib/jquery/';
-
-    // Internal flags for JS-libraries
-    /**
-     * This array holds all jQuery versions that should be included in the
-     * current page.
-     * Each version is described by "source", "version" and "namespace"
-     *
-     * The namespace of every particular version is the key
-     * of that array, because only one version per namespace can exist.
-     *
-     * The type "source" describes where the jQuery core should be included from
-     * currently, TYPO3 supports "local" (make use of jQuery path), "google",
-     * "jquery", "msn" and "cloudflare".
-     *
-     * Currently there are downsides to "local" which supports only the latest/shipped
-     * jQuery core out of the box.
-     *
-     * @var array
-     */
-    protected $jQueryVersions = [];
-
-    /**
-     * Array of jQuery version numbers shipped with the core
-     *
-     * @var array
-     */
-    protected $availableLocalJqueryVersions = [
-        self::JQUERY_VERSION_LATEST
-    ];
-
-    /**
-     * Array of jQuery CDNs with placeholders
-     *
-     * @var array
-     */
-    protected $jQueryCdnUrls = [
-        'google' => 'https://ajax.googleapis.com/ajax/libs/jquery/%1$s/jquery%2$s.js',
-        'msn' => 'https://ajax.aspnetcdn.com/ajax/jQuery/jquery-%1$s%2$s.js',
-        'jquery' => 'https://code.jquery.com/jquery-%1$s%2$s.js',
-        'cloudflare' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/%1$s/jquery%2$s.js'
-    ];
 
     /**
      * if set, the requireJS library is included
@@ -415,7 +254,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     {
         $this->reset();
         $this->csConvObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Charset\CharsetConverter::class);
-        $this->locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
+        parent::__construct();
         if ($templateFile !== '') {
             $this->templateFile = $templateFile;
         }
@@ -434,18 +273,11 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function reset()
     {
+        parent::reset();
         $this->templateFile = 'EXT:core/Resources/Private/Templates/PageRenderer.html';
         $this->jsFiles = [];
         $this->jsFooterFiles = [];
-        $this->jsInline = [];
-        $this->jsFooterInline = [];
         $this->jsLibs = [];
-        $this->cssFiles = [];
-        $this->cssInline = [];
-        $this->metaTags = [];
-        $this->inlineComments = [];
-        $this->headerData = [];
-        $this->footerData = [];
         $this->extOnReadyCode = [];
         $this->jQueryVersions = [];
     }
@@ -456,64 +288,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /*                                                   */
     /*                                                   */
     /*****************************************************/
-    /**
-     * Sets the title
-     *
-     * @param string $title	title of webpage
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
 
-    /**
-     * Enables/disables rendering of XHTML code
-     *
-     * @param bool $enable Enable XHTML
-     */
-    public function setRenderXhtml($enable)
-    {
-        $this->renderXhtml = $enable;
-    }
-
-    /**
-     * Sets xml prolog and docType
-     *
-     * @param string $xmlPrologAndDocType Complete tags for xml prolog and docType
-     */
-    public function setXmlPrologAndDocType($xmlPrologAndDocType)
-    {
-        $this->xmlPrologAndDocType = $xmlPrologAndDocType;
-    }
-
-    /**
-     * Sets meta charset
-     *
-     * @param string $charSet Used charset
-     */
-    public function setCharSet($charSet)
-    {
-        $this->charSet = $charSet;
-    }
-
-    /**
-     * Sets language
-     *
-     * @param string $lang Used language
-     */
-    public function setLanguage($lang)
-    {
-        $this->lang = $lang;
-        $this->languageDependencies = [];
-
-        // Language is found. Configure it:
-        if (in_array($this->lang, $this->locales->getLocales())) {
-            $this->languageDependencies[] = $this->lang;
-            foreach ($this->locales->getLocaleDependencies($this->lang) as $language) {
-                $this->languageDependencies[] = $language;
-            }
-        }
-    }
 
     /**
      * Set the meta charset tag
@@ -563,36 +338,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function setIconMimeType($iconMimeType)
     {
         $this->iconMimeType = $iconMimeType;
-    }
-
-    /**
-     * Sets HTML base URL
-     *
-     * @param string $baseUrl HTML base URL
-     */
-    public function setBaseUrl($baseUrl)
-    {
-        $this->baseUrl = $baseUrl;
-    }
-
-    /**
-     * Sets template file
-     *
-     * @param string $file
-     */
-    public function setTemplateFile($file)
-    {
-        $this->templateFile = $file;
-    }
-
-    /**
-     * Sets Content for Body
-     *
-     * @param string $content
-     */
-    public function setBodyContent($content)
-    {
-        $this->bodyContent = $content;
     }
 
     /**
@@ -753,45 +498,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /*                                                   */
     /*                                                   */
     /*****************************************************/
-    /**
-     * Gets the title
-     *
-     * @return string $title Title of webpage
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Gets the charSet
-     *
-     * @return string $charSet
-     */
-    public function getCharSet()
-    {
-        return $this->charSet;
-    }
-
-    /**
-     * Gets the language
-     *
-     * @return string $lang
-     */
-    public function getLanguage()
-    {
-        return $this->lang;
-    }
-
-    /**
-     * Returns rendering mode XHTML or HTML
-     *
-     * @return bool TRUE if XHTML, FALSE if HTML
-     */
-    public function getRenderXhtml()
-    {
-        return $this->renderXhtml;
-    }
 
     /**
      * Gets html tag
@@ -841,26 +547,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function getIconMimeType()
     {
         return $this->iconMimeType;
-    }
-
-    /**
-     * Gets HTML base URL
-     *
-     * @return string $url
-     */
-    public function getBaseUrl()
-    {
-        return $this->baseUrl;
-    }
-
-    /**
-     * Gets template file
-     *
-     * @return string
-     */
-    public function getTemplateFile()
-    {
-        return $this->templateFile;
     }
 
     /**
@@ -934,16 +620,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Gets content for body
-     *
-     * @return string
-     */
-    public function getBodyContent()
-    {
-        return $this->bodyContent;
-    }
-
-    /**
      * Gets Path for ExtJs library (relative to typo3 directory)
      *
      * @return string
@@ -979,53 +655,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /*                                                   */
     /*                                                   */
     /*****************************************************/
-    /**
-     * Adds meta data
-     *
-     * @param string $meta Meta data (complete metatag)
-     */
-    public function addMetaTag($meta)
-    {
-        if (!in_array($meta, $this->metaTags)) {
-            $this->metaTags[] = $meta;
-        }
-    }
-
-    /**
-     * Adds inline HTML comment
-     *
-     * @param string $comment
-     */
-    public function addInlineComment($comment)
-    {
-        if (!in_array($comment, $this->inlineComments)) {
-            $this->inlineComments[] = $comment;
-        }
-    }
-
-    /**
-     * Adds header data
-     *
-     * @param string $data Free header data for HTML header
-     */
-    public function addHeaderData($data)
-    {
-        if (!in_array($data, $this->headerData)) {
-            $this->headerData[] = $data;
-        }
-    }
-
-    /**
-     * Adds footer data
-     *
-     * @param string $data Free header data for HTML header
-     */
-    public function addFooterData($data)
-    {
-        if (!in_array($data, $this->footerData)) {
-            $this->footerData[] = $data;
-        }
-    }
 
     /**
      * Adds JS Library. JS Library block is rendered on top of the JS files.
@@ -1239,8 +868,8 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
 
         // Add language labels for ExtDirect
         $this->addInlineLanguageLabelArray([
-            'extDirect_timeoutHeader'  => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:extDirect_timeoutHeader',
-            'extDirect_timeoutMessage' => 'LLL:EXT:lang/Resources/Private/Language/locallang_misc.xlf:extDirect_timeoutMessage'
+            'extDirect_timeoutHeader'  => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:extDirect_timeoutHeader',
+            'extDirect_timeoutMessage' => 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:extDirect_timeoutMessage'
         ], true);
 
         $token = ($api = '');
@@ -1725,16 +1354,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
         }
     }
 
-    /**
-     * Adds content to body content
-     *
-     * @param string $content
-     */
-    public function addBodyContent($content)
-    {
-        $this->bodyContent .= $content;
-    }
-
     /*****************************************************/
     /*                                                   */
     /*  Render Functions                                 */
@@ -1821,14 +1440,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function prepareRendering()
     {
-        if ($this->getRenderXhtml()) {
-            $this->endingSlash = ' /';
-        } else {
-            $this->metaCharsetTag = str_replace(' />', '>', $this->metaCharsetTag);
-            $this->baseUrlTag = str_replace(' />', '>', $this->baseUrlTag);
-            $this->shortcutTag = str_replace(' />', '>', $this->shortcutTag);
-            $this->endingSlash = '';
-        }
+        $this->endingSlash = ' /';
     }
 
     /**
@@ -2048,7 +1660,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             $this->extOnReadyCode = [];
             // Include TYPO3.l10n object
             if (TYPO3_MODE === 'BE') {
-                $out .= '<script src="' . $this->processJsFile('EXT:lang/Resources/Public/JavaScript/Typo3Lang.js') . '" type="text/javascript" charset="utf-8"></script>' . LF;
+                $out .= '<script src="' . $this->processJsFile('EXT:core/Resources/Public/JavaScript/Typo3Lang.js') . '" type="text/javascript" charset="utf-8"></script>' . LF;
             }
             if ($this->extJScss) {
                 if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {

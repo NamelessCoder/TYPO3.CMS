@@ -16,7 +16,9 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
 
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
+use TYPO3\CMS\Core\Application\ApplicationDelegateFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Page\PageRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -100,11 +102,11 @@ class LiveSearchToolbarItem implements ToolbarItemInterface
     /**
      * Returns current PageRenderer
      *
-     * @return PageRenderer
+     * @return PageRendererInterface
      */
     protected function getPageRenderer()
     {
-        return GeneralUtility::makeInstance(PageRenderer::class);
+        return ApplicationDelegateFactory::getConfiguredApplicationDelegate()->getPageRenderer();
     }
 
     /**

@@ -2358,7 +2358,7 @@ class TcaMigration
                                 continue;
                             }
                             $fieldConfig['config']['cropVariants']['default'] = [
-                                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
+                                'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
                                 'allowedAspectRatios' => [],
                                 'cropArea' => [
                                     'x' => 0.0,

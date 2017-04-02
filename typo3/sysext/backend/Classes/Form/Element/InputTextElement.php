@@ -245,7 +245,7 @@ class InputTextElement extends AbstractFormElement
             $fullElement[] =     '<label>';
             $fullElement[] =         '<input type="hidden"' . $nullControlNameAttribute . ' value="0" />';
             $fullElement[] =         '<input type="checkbox"' . $nullControlNameAttribute . ' value="1"' . $checked . ' />';
-            $fullElement[] =         $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.nullCheckbox');
+            $fullElement[] =         $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.nullCheckbox');
             $fullElement[] =     '</label>';
             $fullElement[] = '</div>';
             $fullElement[] = $mainFieldHtml;
@@ -259,12 +259,12 @@ class InputTextElement extends AbstractFormElement
                 $shortenedPlaceholder = GeneralUtility::fixed_lgd_cs($placeholder, 20);
                 if ($placeholder !== $shortenedPlaceholder) {
                     $overrideLabel = sprintf(
-                        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
+                        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
                         '<span title="' . htmlspecialchars($placeholder) . '">' . htmlspecialchars($shortenedPlaceholder) . '</span>'
                     );
                 } else {
                     $overrideLabel = sprintf(
-                        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
+                        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
                         htmlspecialchars($placeholder)
                     );
                 }
@@ -273,7 +273,7 @@ class InputTextElement extends AbstractFormElement
                 $checked = ' checked="checked"';
                 $disabled = ' disabled="disabled"';
                 $overrideLabel = $languageService->sL(
-                    'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override_not_available'
+                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override_not_available'
                 );
             }
             $fullElement = [];

@@ -202,7 +202,7 @@ class InputLinkElement extends AbstractFormElement
 
         $linkExplanation = $this->getLinkExplanation($itemValue ?: '');
         $explanation = htmlspecialchars($linkExplanation['text']);
-        $toggleButtonTitle = $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:buttons.toggleLinkExplanation');
+        $toggleButtonTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.toggleLinkExplanation');
 
         $expansionHtml = [];
         $expansionHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
@@ -210,7 +210,7 @@ class InputLinkElement extends AbstractFormElement
         $expansionHtml[] =      '<div class="form-wizards-element">';
         $expansionHtml[] =          '<div class="input-group t3js-form-field-inputlink">';
         $expansionHtml[] =              '<span class="input-group-addon">' . $linkExplanation['icon'] . '</span>';
-        $expansionHtml[] =              '<input class="form-control form-field-inputlink-explanation t3js-form-field-inputlink-explanation" data-toggle="tooltip" data-title="' . $explanation . '" value="' . $explanation . '" readonly>';
+        $expansionHtml[] =              '<div class="form-control form-field-inputlink-explanation t3js-form-field-inputlink-explanation" data-toggle="tooltip" data-title="' . $explanation . '">' . $explanation . '</div>';
         $expansionHtml[] =              '<input type="text"' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
         $expansionHtml[] =              '<span class="input-group-btn">';
         $expansionHtml[] =                  '<button class="btn btn-default t3js-form-field-inputlink-explanation-toggle" type="button" title="' . htmlspecialchars($toggleButtonTitle) . '">';
@@ -243,7 +243,7 @@ class InputLinkElement extends AbstractFormElement
             $fullElement[] =     '<label>';
             $fullElement[] =         '<input type="hidden"' . $nullControlNameAttribute . ' value="0" />';
             $fullElement[] =         '<input type="checkbox"' . $nullControlNameAttribute . ' value="1"' . $checked . ' />';
-            $fullElement[] =         $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.nullCheckbox');
+            $fullElement[] =         $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.nullCheckbox');
             $fullElement[] =     '</label>';
             $fullElement[] = '</div>';
             $fullElement[] = $expansionHtml;
@@ -257,12 +257,12 @@ class InputLinkElement extends AbstractFormElement
                 $shortenedPlaceholder = GeneralUtility::fixed_lgd_cs($placeholder, 20);
                 if ($placeholder !== $shortenedPlaceholder) {
                     $overrideLabel = sprintf(
-                        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
+                        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
                         '<span title="' . htmlspecialchars($placeholder) . '">' . htmlspecialchars($shortenedPlaceholder) . '</span>'
                     );
                 } else {
                     $overrideLabel = sprintf(
-                        $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
+                        $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override'),
                         htmlspecialchars($placeholder)
                     );
                 }
@@ -271,7 +271,7 @@ class InputLinkElement extends AbstractFormElement
                 $checked = ' checked="checked"';
                 $disabled = ' disabled="disabled"';
                 $overrideLabel = $languageService->sL(
-                    'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override_not_available'
+                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override_not_available'
                 );
             }
             $fullElement = [];
@@ -307,6 +307,7 @@ class InputLinkElement extends AbstractFormElement
             return [];
         }
         $data = ['text' => '', 'icon' => ''];
+        $linkData = [];
         $typolinkService = GeneralUtility::makeInstance(TypoLinkCodecService::class);
         $linkParts = $typolinkService->decode($itemValue);
         $linkService = GeneralUtility::makeInstance(LinkService::class);
@@ -319,32 +320,6 @@ class InputLinkElement extends AbstractFormElement
             return $data;
         }
 
-        // Resolving the TypoLink parts (class, title, params)
-        $additionalAttributes = [];
-        foreach ($linkParts as $key => $value) {
-            if ($key === 'url') {
-                continue;
-            }
-            if ($value) {
-                switch ($key) {
-                    case 'class':
-                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:class');
-                        break;
-                    case 'title':
-                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:title');
-                        break;
-                    case 'additionalParams':
-                        $label = $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_browse_links.xlf:params');
-                        break;
-                    default:
-                        $label = $key;
-                }
-
-                $additionalAttributes[] = '<span><strong>' . htmlspecialchars($label) . ': </strong> ' . htmlspecialchars($value) . '</span>';
-            }
-        }
-
-        // Resolve the actual link
         switch ($linkData['type']) {
             case LinkService::TYPE_PAGE:
                 $pageRecord = BackendUtility::readPageAccess($linkData['pageuid'], '1=1');
@@ -364,7 +339,7 @@ class InputLinkElement extends AbstractFormElement
                 break;
             case LinkService::TYPE_URL:
                 $data = [
-                    'text' => $this->getDomainByUrl($linkData['url']),
+                    'text' => $linkData['url'],
                     'icon' => $this->iconFactory->getIcon('apps-pagetree-page-shortcut-external', Icon::SIZE_SMALL)->render()
 
                 ];
@@ -400,32 +375,37 @@ class InputLinkElement extends AbstractFormElement
                 ];
                 break;
             default:
-                // Please note that this hook is preliminary and might change, as this element could become its own
-                // TCA type in the future
-                if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['linkHandler'][$linkData['type']])) {
-                    $linkBuilder = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['linkHandler'][$linkData['type']]);
-                    $data = $linkBuilder->getFormData($linkData, $linkParts, $this->data, $this);
-                } else {
-                    $data = [
-                        'text' => 'not implemented type ' . $linkData['type'],
-                        'icon' => ''
-                    ];
-                }
+                $data = [
+                    'text' => 'not implemented type ' . $linkData['type'],
+                    'icon' => ''
+                ];
+                // @todo this needs a hook for being extensible for other link types. forge #79647
         }
 
-        $data['additionalAttributes'] = '<div class="help-block">' . implode(' - ', $additionalAttributes) . '</div>';
-        return $data;
-    }
+        $additionalAttributes = [];
+        unset($linkParts['url']);
+        foreach ($linkParts as $key => $value) {
+            if ($value) {
+                switch ($key) {
+                    case 'class':
+                        $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_browse_links.xlf:class');
+                        break;
+                    case 'title':
+                        $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_browse_links.xlf:title');
+                        break;
+                    case 'additionalParams':
+                        $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_browse_links.xlf:params');
+                        break;
+                    default:
+                        $label = $key;
+                }
 
-    /**
-     * @param string $uriString
-     *
-     * @return string
-     */
-    protected function getDomainByUrl(string $uriString): string
-    {
-        $data = parse_url($uriString);
-        return $data['host'] ?? '';
+                $additionalAttributes[] = '<span><strong>' . htmlspecialchars($label) . ': </strong> ' . htmlspecialchars($value) . '</span>';
+            }
+        }
+        $data['additionalAttributes'] = '<div class="help-block">' . implode(' - ', $additionalAttributes) . '</div>';
+
+        return $data;
     }
 
     /**

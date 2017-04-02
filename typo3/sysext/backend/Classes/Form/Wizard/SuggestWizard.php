@@ -96,7 +96,7 @@ class SuggestWizard
         $minChars = $minChars > 0 ? $minChars : 2;
 
         $this->view->assignMultiple([
-            'placeholder' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.findRecord',
+            'placeholder' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.findRecord',
             'fieldName' => $data['fieldName'],
             'tableName' => $data['tableName'],
             'field' => $data['parameterArray']['itemFormElName'],

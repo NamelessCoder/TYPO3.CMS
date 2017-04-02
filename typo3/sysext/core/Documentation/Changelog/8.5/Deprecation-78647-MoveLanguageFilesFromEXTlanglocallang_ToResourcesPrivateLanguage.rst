@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 =================================================================================================
-Deprecation: #78647 - Move language files from EXT:lang/locallang_* to Resources/Private/Language
+Deprecation: #78647 - Move language files from EXT:core/locallang_* to Resources/Private/Language
 =================================================================================================
 
 See :issue:`78647`
@@ -9,19 +9,19 @@ See :issue:`78647`
 Description
 ===========
 
-Moved language files from `EXT:lang/locallang_*` to `EXT:lang/Resources/Private/Language`
+Moved language files from `EXT:core/locallang_*` to `EXT:core/Resources/Private/Language`
 
 
 Impact
 ======
 
-Language files from `EXT:lang` have been moved to different places into the core.
+Language files from `EXT:core` have been moved to different places into the core.
 
 
 Affected Installations
 ======================
 
-All 3rd party extensions that are using language labels from `EXT:lang`
+All 3rd party extensions that are using language labels from `EXT:core`
 
 
 Migration

@@ -294,16 +294,16 @@ class Clipboard
             }
 
             $confirmationMessage = sprintf(
-                $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.deleteClip'),
+                $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.deleteClip'),
                 $elementCount
             );
             $title = $languageService
-                ->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clipboard.delete_elements');
+                ->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipboard.delete_elements');
             $returnUrl = $this->deleteUrl(1, ($this->fileMode ? 1 : 0));
             $btnOkText = $languageService
-                ->sL('LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_elements.yes');
+                ->sL('LLL:EXT:core/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_elements.yes');
             $btnCancelText = $languageService
-                ->sL('LLL:EXT:lang/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_elements.no');
+                ->sL('LLL:EXT:core/Resources/Private/Language/locallang_alt_doc.xlf:buttons.confirm.delete_elements.no');
             $optionArray[] = [
                 'label' => htmlspecialchars($title),
                 'uri' => $returnUrl,
@@ -321,7 +321,7 @@ class Clipboard
 
             // Clear clipboard
             $optionArray[] = [
-                'label' => $languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.clipboard.clear_clipboard', true),
+                'label' => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clipboard.clear_clipboard', true),
                 'uri' => $removeAllUrl . '#clip_head'
             ];
             $this->view->assign('optionArray', $optionArray);
@@ -700,7 +700,7 @@ class Clipboard
     public function confirmMsgText($table, $rec, $type, $clElements, $columnLabel = '')
     {
         if ($this->getBackendUser()->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
-            $labelKey = 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.' . ($this->currentMode() === 'copy' ? 'copy' : 'move') . ($this->current === 'normal' ? '' : 'cb') . '_' . $type;
+            $labelKey = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.' . ($this->currentMode() === 'copy' ? 'copy' : 'move') . ($this->current === 'normal' ? '' : 'cb') . '_' . $type;
             $msg = $this->getLanguageService()->sL($labelKey . ($columnLabel ? '_colPos': ''));
             if ($table === '_FILE') {
                 $thisRecTitle = basename($rec);
@@ -741,7 +741,7 @@ class Clipboard
     }
 
     /**
-     * Clipboard label - getting from "EXT:lang/Resources/Private/Language/locallang_core.xlf:"
+     * Clipboard label - getting from "EXT:core/Resources/Private/Language/locallang_core.xlf:"
      *
      * @param string $key Label Key
      * @param string $Akey Alternative key to "labels
@@ -749,7 +749,7 @@ class Clipboard
      */
     public function clLabel($key, $Akey = 'labels')
     {
-        return htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:' . $Akey . '.' . $key));
+        return htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:' . $Akey . '.' . $key));
     }
 
     /**

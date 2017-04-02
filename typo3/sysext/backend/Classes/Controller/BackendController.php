@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Application\ApplicationDelegateFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -32,7 +33,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Rsaauth\RsaEncryptionEncoder;
 
 /**
  * Class for rendering the TYPO3 backend
@@ -109,7 +109,7 @@ class BackendController
      */
     public function __construct()
     {
-        $this->getLanguageService()->includeLLFile('EXT:lang/Resources/Private/Language/locallang_misc.xlf');
+        $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
@@ -118,7 +118,7 @@ class BackendController
         // Initializes the backend modules structure for use later.
         $this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
         $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
-        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $this->pageRenderer = ApplicationDelegateFactory::getConfiguredApplicationDelegate()->getPageRenderer();
         $this->pageRenderer->loadExtJS();
         // included for the module menu JavaScript, please note that this is subject to change
         $this->pageRenderer->loadJquery();
@@ -168,6 +168,12 @@ class BackendController
         $rsaEncryptionEncoder->enableRsaEncryption(true);
 
         $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', BackendUtility::getModuleUrl('show_item'));
+
+        $this->pageRenderer->addInlineSetting('FileRename', 'moduleUrl', BackendUtility::getModuleUrl('file_rename'));
+        $this->pageRenderer->addInlineSetting('FileEdit', 'moduleUrl', BackendUtility::getModuleUrl('file_edit'));
+        $this->pageRenderer->addInlineSetting('FileUpload', 'moduleUrl', BackendUtility::getModuleUrl('file_upload'));
+        $this->pageRenderer->addInlineSetting('FileCreate', 'moduleUrl', BackendUtility::getModuleUrl('file_newfolder'));
+        $this->pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', BackendUtility::getModuleUrl('tce_file'));
 
         $this->css = '';
 
@@ -570,23 +576,23 @@ class BackendController
     {
         $lang = $this->getLanguageService();
         $coreLabels = [
-            'waitTitle' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_logging_in'),
-            'refresh_login_failed' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_failed'),
-            'refresh_login_failed_message' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_failed_message'),
-            'refresh_login_title' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_title'),
-            'login_expired' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.login_expired'),
-            'refresh_login_username' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_username'),
-            'refresh_login_password' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_password'),
-            'refresh_login_emptyPassword' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_emptyPassword'),
-            'refresh_login_button' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_button'),
-            'refresh_exit_button' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_exit_button'),
-            'please_wait' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.please_wait'),
-            'be_locked' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.be_locked'),
-            'login_about_to_expire' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.login_about_to_expire'),
-            'login_about_to_expire_title' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.login_about_to_expire_title'),
-            'refresh_login_logout_button' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_logout_button'),
-            'refresh_login_refresh_button' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_refresh_button'),
-            'csh_tooltip_loading' => $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:csh_tooltip_loading')
+            'waitTitle' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_logging_in'),
+            'refresh_login_failed' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_failed'),
+            'refresh_login_failed_message' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_failed_message'),
+            'refresh_login_title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_title'),
+            'login_expired' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.login_expired'),
+            'refresh_login_username' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_username'),
+            'refresh_login_password' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_password'),
+            'refresh_login_emptyPassword' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_emptyPassword'),
+            'refresh_login_button' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_button'),
+            'refresh_exit_button' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refresh_exit_button'),
+            'please_wait' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.please_wait'),
+            'be_locked' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.be_locked'),
+            'login_about_to_expire' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.login_about_to_expire'),
+            'login_about_to_expire_title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.login_about_to_expire_title'),
+            'refresh_login_logout_button' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_logout_button'),
+            'refresh_login_refresh_button' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.refresh_login_refresh_button'),
+            'csh_tooltip_loading' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:csh_tooltip_loading')
         ];
         $labels = [
             'fileUpload' => [
@@ -768,7 +774,7 @@ class BackendController
             // Warning about page editing:
             require(["TYPO3/CMS/Backend/Modal", "TYPO3/CMS/Backend/Severity"], function(Modal, Severity) {
                 Modal.show("", ' . GeneralUtility::quoteJSvalue(sprintf($this->getLanguageService()->getLL('noEditPage'), $editId)) . ', Severity.notice, [{
-                    text: ' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_common.xlf:close')) . ',
+                    text: ' . GeneralUtility::quoteJSvalue($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:close')) . ',
                     active: true,
                     btnClass: "btn-info",
                     name: "cancel",
