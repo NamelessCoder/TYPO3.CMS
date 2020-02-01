@@ -14,20 +14,18 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Debug;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Debuggable version of f:render - performs the same
- * rendering operation but wraps the output with HTML
- * that can be inspected with the admin panel in FE.
+ * Debuggable version of :ref:`f:render <typo3-fluid-render>` - performs the
+ * same rendering operation but wraps the output with HTML that can be
+ * inspected with the admin panel in frontend.
  *
- * Replaces `f:render` when the admin panel decides
- * (see ViewHelperResolver class). Also possible to use
- * explicitly by using `f:debug.render` instead of the
- * normal `f:render` statement.
- *
- * @api
+ * Replaces ``f:render`` when the admin panel decides (see
+ * :php:`ViewHelperResolver` class). Also possible to use explicitly by using
+ * ``f:debug.render`` instead of the normal ``f:render`` statement.
  */
 class RenderViewHelper extends AbstractViewHelper
 {
@@ -38,11 +36,12 @@ class RenderViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * Initializes additional arguments available for this view helper.
+     * Initializes additional arguments available for this ViewHelper.
      */
     public function initializeArguments()
     {
         parent::initializeArguments();
+        $this->registerArgument('debug', 'boolean', 'If true, the admin panel shows debug information if activated,', false, true);
         $this->registerArgument('section', 'string', 'Section to render - combine with partial to render section in partial', false, null);
         $this->registerArgument('partial', 'string', 'Partial to render, with or without section', false, null);
         $this->registerArgument('arguments', 'array', 'Array of variables to be transferred. Use {_all} for all variables', false, []);
@@ -55,10 +54,10 @@ class RenderViewHelper extends AbstractViewHelper
      * Renders the content.
      *
      * @return string
-     * @api
      */
     public function render()
     {
+        $isDebug = $this->arguments['debug'];
         $section = $this->arguments['section'];
         $partial = $this->arguments['partial'];
         $arguments = (array)$this->arguments['arguments'];
@@ -71,16 +70,22 @@ class RenderViewHelper extends AbstractViewHelper
         }
 
         $content = '';
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         if ($partial !== null) {
-            $content = $this->viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments, $optional);
+            $content = $viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments, $optional);
         } elseif ($section !== null) {
-            $content = $this->viewHelperVariableContainer->getView()->renderSection($section, $arguments, $optional);
+            $content = $viewHelperVariableContainer->getView()->renderSection($section, $arguments, $optional);
         }
         // Replace empty content with default value. If default is
         // not set, NULL is returned and cast to a new, empty string
         // outside of this ViewHelper.
         if ($content === '') {
-            $content = isset($this->arguments['default']) ? $this->arguments['default'] : $tagContent;
+            $content = $this->arguments['default'] ?? $tagContent;
+        }
+
+        // if debug is disabled, return content
+        if (!$isDebug) {
+            return $content;
         }
 
         $cssRules = [];
@@ -98,9 +103,16 @@ class RenderViewHelper extends AbstractViewHelper
         $debugInfo = [];
         if (isset($this->arguments['partial'])) {
             $path = $this->renderingContext->getTemplatePaths()->getPartialPathAndFilename($partial);
+            $path = str_replace(
+                [
+                    Environment::getBackendPath() . '/ext/',
+                    Environment::getExtensionsPath() . '/',
+                    Environment::getFrameworkBasePath() . '/'
+                ],
+                'EXT:',
+                $path
+            );
             $path = PathUtility::stripPathSitePrefix($path);
-            $path = str_replace('typo3conf/ext/', 'EXT:', $path);
-            $path = str_replace('typo3/sysext/', 'EXT:', $path);
             $debugInfo['Partial'] = 'Partial: ' . $path;
         }
         if (isset($this->arguments['section'])) {

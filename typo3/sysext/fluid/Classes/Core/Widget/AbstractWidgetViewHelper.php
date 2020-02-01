@@ -14,10 +14,11 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Component\ComponentInterface;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
-/**
  * @api
  */
 abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
@@ -27,7 +28,6 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
      * This needs to be filled by the individual subclass by an inject method.
      *
      * @var \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
-     * @api
      */
     protected $controller;
 
@@ -35,7 +35,6 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
      * If set to TRUE, it is an AJAX widget.
      *
      * @var bool
-     * @api
      */
     protected $ajaxWidget = false;
 
@@ -66,6 +65,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 
     /**
      * @param \TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder
+     * @internal
      */
     public function injectAjaxWidgetContextHolder(\TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder $ajaxWidgetContextHolder)
     {
@@ -74,6 +74,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     * @internal
      */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
     {
@@ -83,6 +84,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 
     /**
      * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
+     * @internal
      */
     public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService)
     {
@@ -91,6 +93,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 
     /**
      * Initialize arguments.
+     * @internal
      */
     public function initializeArguments()
     {
@@ -101,12 +104,20 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
             false,
             null
         );
+        $this->registerArgument(
+            'storeSession',
+            'bool',
+            'Store the widgets session (utilizing a cookie).',
+            false,
+            true
+        );
     }
 
     /**
      * Initialize the arguments of the ViewHelper, and call the render() method of the ViewHelper.
      *
      * @return string the rendered ViewHelper.
+     * @internal
      */
     public function initializeArgumentsAndRender()
     {
@@ -124,25 +135,24 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
         $this->widgetContext->setWidgetConfiguration($this->getWidgetConfiguration());
         $this->initializeWidgetIdentifier();
         $this->widgetContext->setControllerObjectName(get_class($this->controller));
-        $vendorName = $this->renderingContext->getControllerContext()->getRequest()->getControllerVendorName();
         $extensionName = $this->renderingContext->getControllerContext()->getRequest()->getControllerExtensionName();
         $pluginName = $this->renderingContext->getControllerContext()->getRequest()->getPluginName();
-        $this->widgetContext->setParentVendorName($vendorName);
         $this->widgetContext->setParentExtensionName($extensionName);
         $this->widgetContext->setParentPluginName($pluginName);
         $pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
         $this->widgetContext->setParentPluginNamespace($pluginNamespace);
-        $this->widgetContext->setWidgetViewHelperClassName(get_class($this));
-        if ($this->ajaxWidget === true) {
+        $this->widgetContext->setWidgetViewHelperClassName(static::class);
+        if ($this->ajaxWidget === true && $this->arguments['storeSession']) {
             $this->ajaxWidgetContextHolder->store($this->widgetContext);
         }
     }
 
     /**
      * Stores the syntax tree child nodes in the Widget Context, so they can be
-     * rendered with <f:widget.renderChildren> lateron.
+     * rendered with <f:widget.renderChildren> later on.
      *
      * @param array $childNodes The SyntaxTree Child nodes of this ViewHelper.
+     * @internal
      */
     public function setChildNodes(array $childNodes)
     {
@@ -157,11 +167,41 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
      * Generate the configuration for this widget. Override to adjust.
      *
      * @return array
-     * @api
      */
     protected function getWidgetConfiguration()
     {
         return $this->arguments;
+    }
+    /**
+     * Initialize the arguments of the ViewHelper, and call the render() method of the ViewHelper.
+     *
+     * @param RenderingContextInterface $renderingContext
+     * @return string the rendered ViewHelper.
+     * @internal
+     */
+    public function evaluate(RenderingContextInterface $renderingContext)
+    {
+        $this->renderingContext = $renderingContext;
+        $this->getArguments()->setRenderingContext($renderingContext);
+        $this->initializeWidgetContext();
+        return $this->callRenderMethod();
+    }
+
+    /**
+     * Stores the syntax tree child nodes in the Widget Context, so they can be
+     * rendered with <f:widget.renderChildren> lateron.
+     *
+     * @param RenderingContextInterface $renderingContext
+     * @return ComponentInterface
+     * @internal
+     */
+    public function onClose(RenderingContextInterface $renderingContext): ComponentInterface
+    {
+        $node = parent::onClose($renderingContext);
+        $rootNode = $this->objectManager->get(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode::class);
+        $rootNode->setChildren($this->getChildren());
+        $this->widgetContext->setViewHelperChildNodes($rootNode, $renderingContext);
+        return $node;
     }
 
     /**
@@ -170,16 +210,15 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
      *
      * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface the response of this request.
      * @throws \TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException
-     * @api
      */
     protected function initiateSubRequest()
     {
         if (!isset($this->controller) || !$this->controller instanceof \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController) {
             throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException(
                 'initiateSubRequest() can not be called if there is no valid controller extending ' .
-                'TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController' .
+                \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class .
                 ' Got "' . ($this->controller ? get_class($this->controller) : gettype($this->controller)) .
-                '" in class "' . get_class($this) . '".',
+                '" in class "' . static::class . '".',
                 1289422564
             );
         }
@@ -218,9 +257,10 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
      */
     private function initializeWidgetIdentifier()
     {
-        $widgetCounter = $this->viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, 'nextWidgetNumber', 0);
-        $widgetIdentifier = '@widget_' . ($this->arguments['customWidgetId'] !== null ? $this->arguments['customWidgetId'] . '_' : '') . $widgetCounter;
-        $this->viewHelperVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, 'nextWidgetNumber', $widgetCounter + 1);
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        $widgetCounter = $viewHelperVariableContainer->get(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, 'nextWidgetNumber', 0);
+        $widgetIdentifier = '@widget_' . ((isset($this->arguments['customWidgetId']) && $this->arguments['customWidgetId'] !== null) ? $this->arguments['customWidgetId'] . '_' : '') . $widgetCounter;
+        $viewHelperVariableContainer->addOrUpdate(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper::class, 'nextWidgetNumber', $widgetCounter + 1);
         $this->widgetContext->setWidgetIdentifier($widgetIdentifier);
     }
 
@@ -230,6 +270,7 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
      * @param string $initializationPhpCode
      * @param ViewHelperNode $node
      * @param TemplateCompiler $compiler
+     * @return string
      */
     public function compile($argumentsName, $closureName, &$initializationPhpCode, ViewHelperNode $node, TemplateCompiler $compiler)
     {
